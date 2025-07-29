@@ -1,0 +1,182 @@
+/* =========================== FUENTES PERSONALIZADAS =========================== */
+@font-face {
+  font-family: 'Work-Sans'; /* Fuente base regular */
+  src: url('../assets/fonts/WorkSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Work-Sans-Black'; /* Fuente extra bold (bien gruesa) */
+  src: url('../assets/fonts/Work-Sans-Black.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Work-Sans-Medium'; /* Fuente intermedia, entre regular y bold */
+  src: url('../assets/fonts/WorkSans-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Work-Sans-Bold'; /* Fuente en negrita */
+  src: url('../assets/fonts/WorkSans-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Work-Sans-SemiBold'; /* Semi bold, más marcada que medium pero menos que bold */
+  src: url('../assets/fonts/WorkSans-SemiBold.ttf') format('truetype');
+}
+
+/* =========================== RESET GENERAL =========================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Work-Sans', sans-serif;
+}
+
+/* =========================== NAVBAR =========================== */
+.navbar {
+  display: flex;
+  width: 100%;
+  height: 100px;
+}
+
+.ecos {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 25%;
+  font-size: 30px;
+  padding-left: 60px;
+  font-family: 'Work-Sans-Bold';
+}
+
+.opciones {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 75%;
+  height: 100%;
+  gap: 15px;
+  padding-right: 55px;
+}
+
+.opciones a:hover {
+  color: #ffffff;
+  background-color: #adcfa6;
+  transition: all 0.3s ease;
+}
+
+.opcion {
+  font-size: 20px;
+  list-style: none;
+  font-family: 'Roboto', sans-serif;
+}
+
+.navbar a, .opciones a {
+  text-decoration: none;
+  color: black;
+  border-radius: 12px;
+  padding: 12px 24px;
+}
+
+/* =========================== ESTRUCTURA PRINCIPAL =========================== */
+.container {
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
+}
+
+
+
+/* =========================== SECCIÓN PRINCIPAL =========================== */
+.main {
+  background-color: #adcfa6;
+}
+
+.main button {
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 25px;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  margin-left: 50px;
+  cursor: pointer;
+}
+
+
+/* =========================== FOOTER =========================== */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 40px 60px;
+  background-color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.social-icons a {
+  margin-top: 25px;
+  text-decoration: none;
+  margin-right: 55px;
+  color: #333;
+  font-size: 50px;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #0077b5;
+}
+
+.footer-left {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-title {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons img {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.social-icons img:hover {
+  opacity: 1;
+}
+
+.footer-right {
+  flex: 2;
+  min-width: 300px;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.column h4 {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.column p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #333;
+}
