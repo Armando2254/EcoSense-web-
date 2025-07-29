@@ -1,103 +1,272 @@
+/* =========================== FUENTES PERSONALIZADAS =========================== */
 @font-face {
-  font-family: 'Work-Sans';
+  font-family: 'Work-Sans'; /* Fuente base regular */
   src: url('assets/fonts/WorkSans-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Work-Sans-Black';
+  font-family: 'Work-Sans-Black'; /* Fuente extra bold (bien gruesa) */
   src: url('assets/fonts/Work-Sans-Black.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Work-Sans-Medium';
-  src: url('assets/fonts/Work-Sans-Medium.ttf') format('truetype');
+  font-family: 'Work-Sans-Medium'; /* Fuente intermedia, entre regular y bold */
+  src: url('assets/fonts/WorkSans-Medium.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Work-Sans-Bold';
+  font-family: 'Work-Sans-Bold'; /* Fuente en negrita */
   src: url('assets/fonts/WorkSans-Bold.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Work-Sans-SemiBold';
+  font-family: 'Work-Sans-SemiBold'; /* Semi bold, más marcada que medium pero menos que bold */
   src: url('assets/fonts/WorkSans-SemiBold.ttf') format('truetype');
 }
 
+/* =========================== RESET GENERAL =========================== */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  margin: 0; /* Sin márgenes por defecto */
+  padding: 0; /* Sin rellenos por defecto */
+  box-sizing: border-box; /* Incluye borde y padding dentro del tamaño total */
 }
 
+/* Fuente principal del sitio */
 body {
   font-family: 'Work-Sans', sans-serif;
 }
 
+/* =========================== ESTRUCTURA PRINCIPAL =========================== */
+.container {
+  display: grid; /* Usa grid layout */
+  min-height: 100vh; /* Al menos altura completa del viewport */
+  grid-template-rows: auto 1fr auto; /* Header, contenido, footer */
+}
+
+/* =========================== NAVBAR =========================== */
 .navbar {
-  display: flex;
-  width: 100%;
-  height: 100px;
+  display: flex; /* Distribuye en fila */
+  width: 100%; /* Ocupa todo el ancho */
+  height: 100px; /* Altura fija de 100px */
 }
 
 .eco {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  width: 25%;
-  font-size: 30px;
-  padding-left: 60px;
-  font-family: 'Work-Sans-Bold';
+  display: flex; /* Permite alinear el texto vertical y horizontalmente */
+  justify-content: start; /* Alinea a la izquierda */
+  align-items: center; /* Centra verticalmente */
+  width: 25%; /* Ocupa el 25% del ancho de la navbar */
+  font-size: 30px; /* Tamaño grande */
+  padding-left: 60px; /* Espacio a la izquierda */
+  font-family: 'Work-Sans-Bold'; /* Fuente negrita */
 }
-
-.Login {
-  background-color: black;
-  color: white !important;
-  border: none;
-  border-radius: 12px;
-  font-size: 15px;
-  font-family: 'Work-Sans-Bold', sans-serif;
-  padding: 12px 24px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: fit-content;
-  /* Elimina esto: margin: auto; */
-  margin-left: 20px; /* o 0 si no quieres separación */
-}
-
 
 .opciones {
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  width: 75%;
-  height: 100%;
-  gap: 30px; /* reduce el espacio si está muy separado */
-  padding-right: 60px;
+  display: flex; /* Distribuye los elementos en fila */
+  justify-content: end; /* Alinea a la derecha */
+  align-items: center; /* Centra verticalmente */
+  width: 75%; /* Ocupa el resto de la navbar */
+  height: 100%; /* Igual altura que la navbar */
+  gap: 15px; /* Espacio entre elementos */
+  padding-right: 55px; /* Margen a la derecha */
 }
 
+.opciones a:hover {
+  color: #ffffff; /* Un poco más oscuro */
+  background-color: #adcfa6;
+  transition: all 0.3s ease; /* Transición suave al pasar el ratón */
+}
 
 .opcion {
-  font-size: 15px;
-  padding: 10px;
-  list-style: none;
-  font-family: 'Work-Sans-SemiBold';
+  font-size: 20px;
+  list-style: none; /* Sin viñetas */
+  font-family: 'Roboto', sans-serif; /* Fuente seminegrita */
 }
 
 .navbar a, .opciones a {
-  text-decoration: none;
-  color: black;
+  text-decoration: none; /* Sin subrayado */
+  color: black; /* Color del texto */
+  border-radius: 12px; /* Bordes redondeados */
+  padding: 12px 24px; /* Espaciado interno */
 }
 
+.Login {
+  background-color: black; /* Fondo negro */
+  color: white !important; /* Texto blanco, con !important por si acaso alguien lo sobrescribe */
+  border: none; /* Sin borde */
+  border-radius: 12px; /* Bordes redondeados */
+  font-size: 15px; /* Tamaño de letra cómodo */
+  font-family: 'Work-Sans-Bold', sans-serif; /* Fuente en negrita */
+  padding: 12px 24px; /* Espaciado interno */
+  cursor: pointer; /* Cursor de mano al pasar */
+  display: flex; /* Alineación interna */
+  justify-content: center;
+  align-items: center;
+  width: fit-content; /* El ancho se adapta al contenido */
+  margin-left: 20px; /* Separación con respecto a los otros elementos */
+}
+
+/* =========================== SECCIÓN PRINCIPAL =========================== */
 .main {
-  background-color: #adcfa6;
+  background-color: #adcfa6; /* Fondo verde suave */
 }
 
 .Ecosense {
-  font-size: 50px;
-  font-family: 'Work-Sans-Black';
+  font-size: 50px; /* Muy grande */
+  font-family: 'Inter', sans-serif; /* Aquí cambiaste a Inter, bien jugado */
+  text-align: start; /* Alineado a la izquierda */
+  margin-top: 20px; /* Espacio arriba */
+  margin-left: 50px; /* Espacio a la izquierda */
+}
+
+.main p {
+  font-size: 21px;
+  line-height: 1.6; /* Espaciado entre líneas para mejor legibilidad */
+  max-width: 600px; /* Para que no se extienda demasiado */
+  margin: 20px 0 40px 50px; /* Espaciado arriba, abajo y a la izquierda */
+  font-family: 'Inter', sans-serif; /* Fuente cómoda para leer */
   text-align: start;
-  margin-top: 50px;
-  margin-left: 50px;
+}
+
+.main button {
+  background-color: black; /* Fondo negro */
+  color: white; /* Texto blanco */
+  border: none;
+  border-radius: 10px; /* Bordes suaves */
+  padding: 15px 25px; /* Buen tamaño para dar clic/tocar */
+  font-size: 16px;
+  font-family: 'Work-Sans-Bold'; /* Negrita para destacar */
+  margin-left: 50px; /* Alineado con el texto */
+  cursor: pointer; /* Manita al pasar encima */
+}
+
+/* =========================== IMAGEN DEL MAPA =========================== */
+.img-map {
+  height: auto;
+  flex: 1; /* Ocupará el espacio disponible */
+  display: flex;
+  justify-content: center; /* Centrado horizontal */
+  margin-top: 3rem;
+  margin-bottom: 3rem; /* Espacio antes y después */
+}
+
+.img-map img {
+  max-width: 100%; /* No se desborda del contenedor */
+  height: auto; /* Mantiene proporción */
+  border-radius: 10px; /* Esquinas redondeadas */
+}
+/* ============================== SECCIÓN DE CONTACTO ======================*/
+.contacto {
+  background-color: #f2f2f2; /* Fondo gris claro */
+  padding: 20px; /* Espaciado interno */
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.titulo {
+  font-size: 50px; /* Tamaño del título */
+  font-family: 'Inter', sans-serif; /* Fuente en negrita */
+  color: black; /* Color del texto */
+  margin-bottom: 10px; /* Espacio debajo del título */
+  font-weight: 600; /* Peso de la fuente */
+}
+
+.botones {
+  display: flex;
+  gap: 10px; /* Espacio entre botones */
+  justify-content: flex-end; /* Alinear botones a la derecha */
+}
+  
+.boton-prim {
+  display: inline-block; /* Para que se comporten como botones */
+  color: white;
+  background-color: black;
+  margin-right: 10px; /* Espacio entre botones */
+  border-radius: 5px; /* Bordes redondeados */
+  text-decoration: none; /* Sin subrayado */
+  padding: 12px 24px; /* Espaciado interno */
+}
+
+.boton-sec {
+  display: inline-block; /* Para que se comporten como botones */
+  color: black;
+  background-color: rgb(227, 227, 227);
+  margin-right: 10px; /* Espacio entre botones */
+  border-radius: 5px; /* Bordes redondeados */
+  text-decoration: none; /* Sin subrayado */
+  padding: 12px 24px; /* Espaciado interno */
+}
+ /* =========================== FOOTER =========================== */
+.footer {
+  display: flex;
+  justify-content: space-between; /* Separa izquierda y derecha */
+  align-items: flex-start;
+  padding: 40px 60px;
+  background-color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  gap: 60px;
+  flex-wrap: wrap; /* Responsive */
+}
+
+.social-icons a {
+  margin-top: 25px;
+  text-decoration: none;
+  margin-right: 55px;
+  color: #333; /* color base */
+  font-size: 50px; /* tamaño del icono */
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #0077b5; /* color al pasar el mouse (puede cambiarse) */
+}
+
+/* Izquierda */
+.footer-left {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-title {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons img {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.social-icons img:hover {
+  opacity: 1;
+}
+
+/* Derecha */
+.footer-right {
+  flex: 2;
+  min-width: 300px;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.column h4 {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.column p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #333;
 }
