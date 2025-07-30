@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../styles.css">
+  <title>Gestión de Contenedores</title>
+  <style>
+    * {
+
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .left, .right {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .left {
+      width: 50%;
+      background-color: #f4f4f4;
+      padding: 20px;
+      border-right: 2px solid #ccc;
+    }
+
+    .right {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-right {
+      flex: 2;
+      padding: 20px;
+      background-color: #eafaf1;
+      border-bottom: 2px solid #ccc;
+      overflow-y: auto;
+    }
+
+    .bottom-right {
+      flex: 1;
+      padding: 20px;
+      background-color: #fef9e7;
+    }
+
+    .card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-content {
+      max-width: 85%;
+    }
+
+    .card button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .card button.remove {
+      background-color: #dc3545;
+    }
+
+    select, button.assign-btn {
+      padding: 10px;
+      font-size: 16px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .ola{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <p class="eco">EcoSense</p>
+    <ul class="opciones">
+      <li class="opcion"><a href="index.html">Home</a></li>
+      <li class="opcion"><a href="servicios.html">Route</a></li>
+      <li class="opcion"><a href="contacto.html">Statics</a></li>
+      <li class="opcion"><a href="contacto.html">Trash Cans</a></li>
+      <li class="opcion"><a class="Login" href="Login/index.html">Login</a></li>
+
+    </ul>
+  </nav>
+  <div class="ola">
+
+  <div class="left">
+    <h2>Contenedores críticos</h2>
+    <div id="contenedores-lista"></div>
+  </div>
+
+  <div class="right">
+    <div class="top-right">
+      <h2>Contenedores asignados</h2>
+      <div id="contenedores-asignados"></div>
+    </div>
+    <div class="bottom-right">
+      <h2>Asignar a recolector</h2>
+      <select id="select-recolector">
+        <option value="">Cargando recolectores...</option>
+      </select>
+      <button class="assign-btn">Asignar</button>
+    </div>
+  </div>
+</div>
+  <script>
+    const contenedoresLista = document.getElementById('contenedores-lista');
+    const contenedoresAsignados = document.getElementById('contenedores-asignados');
+    const selectRecolector = document.getElementById('select-recolector');
+
+    let contenedores = [];
+    let asignados = [];
+
+    // Cargar contenedores de la API
+    fetch('https://localhost:7168/api/Contenedor')
+      .then(res => res.json())
+      .then(data => {
+        contenedores = data.filter(c => c.porcentajeActual >= 80);
+        renderContenedores();
+      })
+      .catch(err => {
+        console.error("Error cargando contenedores:", err);
+      });
+
+    // Cargar recolectores (simulado mientras se desarrolla)
+    fetch('https://localhost:7168/api/Recolector')
+      .then(res => res.json())
+      .then(data => {
+        selectRecolector.innerHTML = '';
+        data.forEach(r => {
+          const option = document.createElement('option');
+          option.value = r.id;
+          option.textContent = r.nombrePila +" "+ r.primerApell +" "+ r.segundoApell;
+          selectRecolector.appendChild(option);
+        });
+      })
+      .catch(err => {
+        console.error("Error cargando recolectores:", err);
+        selectRecolector.innerHTML = '<option value="">Error al cargar</option>';
+      });
+
+    function renderContenedores() {
+      contenedoresLista.innerHTML = '';
+      contenedores.forEach(c => {
+        const card = createCard(c, '+');
+        contenedoresLista.appendChild(card);
+      });
+    }
+
+    function renderAsignados() {
+      contenedoresAsignados.innerHTML = '';
+      asignados.forEach(c => {
+        const card = createCard(c, '−');
+        contenedoresAsignados.appendChild(card);
+      });
+    }
+
+    function createCard(contenedor, tipo) {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const content = document.createElement('div');
+      content.className = 'card-content';
+      content.innerHTML = `
+        <strong>${contenedor.nombre}</strong><br>
+        Ubicación: ${contenedor.ubicacion.nombre}<br>
+        Porcentaje: ${contenedor.porcentajeActual.toFixed(2)}%<br>
+        Status: ${contenedor.status}
+      `;
+
+      const button = document.createElement('button');
+      button.textContent = tipo;
+
+      if (tipo === '+') {
+        button.addEventListener('click', () => {
+          asignados.push(contenedor);
+          contenedores = contenedores.filter(c => c.id !== contenedor.id);
+          renderContenedores();
+          renderAsignados();
+        });
+      } else {
+        button.classList.add('remove');
+        button.addEventListener('click', () => {
+          contenedores.push(contenedor);
+          asignados = asignados.filter(c => c.id !== contenedor.id);
+          renderContenedores();
+          renderAsignados();
+        });
+      }
+
+      card.appendChild(content);
+      card.appendChild(button);
+      return card;
+    }
+
+    // El botón de "Asignar" aún no hace nada
+    document.querySelector('.assign-btn').addEventListener('click', () => {
+      const recolectorId = selectRecolector.value;
+      if (!recolectorId) {
+        alert("Selecciona un recolector.");
+        return;
+      }
+      alert("Asignación simulada. (Funcionalidad en desarrollo)");
+    });
+  </script>
+
+</body>
+</html>

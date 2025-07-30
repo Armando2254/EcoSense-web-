@@ -120,8 +120,8 @@ body {
 }
 
 .login-image {
-  width: 70%;
-  max-width: 400px;
+  width: 100%;
+  max-width: 800px;
   height: auto;
 }
 
@@ -131,6 +131,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   font-family: 'Roboto', sans-serif;
   background-color: #ffffff;
   

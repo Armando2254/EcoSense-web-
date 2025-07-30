@@ -19,7 +19,7 @@
     <div class="login-container">
     <!-- Lado Izquierdo: Imagen centrada -->
     <div class="login-left">
-        <a href="../index.html"><img src="assets/images/login-image.svg" alt="Login Image" class="login-image"></a>
+        <a href="../index.html"><img src="../assets/images/logoEcoSense.png" alt="Login Image" class="login-image"></a>
     </div>
 
     <!-- Lado Derecho: Formulario de inicio de sesión -->
@@ -28,25 +28,29 @@
         <h2 class="login-bienvenida">Welcome to Ecosense</h2>
 
         <form class="login-form">
-        <!-- Campo de correo -->
-        <div class="input-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Example@mail.com" required>
-        </div>
+  <!-- Campo de correo -->
+  <div class="input-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Example@mail.com" required>
+  </div>
 
-        <!-- Campo de contraseña -->
-        <div class="input-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="********" required>
-        </div>
-        <!-- Enlace para recuperar contraseña -->
-        <div class="forgot-password">
-            <a href="#">Forgot your password?</a>
-        </div>
+  <!-- Campo de contraseña -->
+  <div class="input-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="********" required>
+  </div>
 
-        <!-- Botón de iniciar sesión -->
-        <button type="submit" class="signin-button" href="#">Sign In</button>
-        </form>
+  <!-- Enlace para recuperar contraseña -->
+  <div class="forgot-password">
+    <a href="#">Forgot your password?</a>
+  </div>
+
+  <!-- Botón de iniciar sesión -->
+  <button type="button" class="signin-button" onclick="window.location.href='/Main/Dashboard.html'">
+    Sign In
+  </button>
+</form>
+
     </div>
     </div>
 </main>
