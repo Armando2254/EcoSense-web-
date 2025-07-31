@@ -10,6 +10,8 @@
 
 </head>
 <body>
+
+    
     <div class="container">
     <nav class="navbar">
     <p class="eco">Panel de Administrador</p>
@@ -21,12 +23,18 @@
     </ul>
     </nav>
 
+
+
+
     <main class="main">
+  <div id="map" style="height: 400px; width: 100%;"></div>
+</main>
 
 
 
-        
-    </main>
+
+
+
 
 
     <footer class="footer">
@@ -66,6 +74,30 @@
 
 
     </div>
+<script src="map.js"></script>
+
+    <script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEWPagYyJ8nGiUZMW690Md4gH1T8Gkv4o&callback=initMap"
+  async
+  defer
+></script>
+
+
+<!-- Modal -->
+<div id="modalContenedor" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; 
+  background: rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+  <div style="background:white; padding:20px; border-radius:10px; max-width:400px; width:90%;">
+    <h2 id="modalNombre"></h2>
+    <p><strong>Porcentaje:</strong> <span id="modalPorcentaje"></span>%</p>
+    <p><strong>Ubicación:</strong> <span id="modalUbicacion"></span></p>
+    <p><strong>Latitud:</strong> <span id="modalLatitud"></span></p>
+    <p><strong>Longitud:</strong> <span id="modalLongitud"></span></p>
+    <div style="margin-top:20px; display:flex; justify-content:space-between;">
+      <button id="btnCerrarModal" style="padding:10px 20px;">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 
     </body>
     </html>
