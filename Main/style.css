@@ -1,4 +1,4 @@
-/* =========================== FUENTES PERSONALIZADAS =========================== */
+/* =========================== FUENTES PERSONALIZADAS ==========================3= */
 @font-face {
   font-family: 'Work-Sans'; /* Fuente base regular */
   src: url('../assets/fonts/WorkSans-Regular.ttf') format('truetype');
@@ -35,6 +35,13 @@ body {
   font-family: 'Work-Sans', sans-serif;
 }
 
+/* =========================== ESTRUCTURA PRINCIPAL =========================== */
+.container {
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
+}
+
 /* =========================== NAVBAR =========================== */
 .navbar {
   display: flex;
@@ -42,14 +49,20 @@ body {
   height: 100px;
 }
 
-.ecos {
+.eco {
   display: flex;
   justify-content: start;
   align-items: center;
-  width: 25%;
+  width: 30%;
   font-size: 30px;
   padding-left: 60px;
   font-family: 'Work-Sans-Bold';
+}
+
+.picture-user {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
 }
 
 .opciones {
@@ -81,18 +94,9 @@ body {
   padding: 12px 24px;
 }
 
-/* =========================== ESTRUCTURA PRINCIPAL =========================== */
-.container {
-  display: grid;
-  min-height: 100vh;
-  grid-template-rows: auto 1fr auto;
-}
-
-
-
 /* =========================== SECCIÓN PRINCIPAL =========================== */
 .main {
-  background-color: #adcfa6;
+  background-color: #f6f6f6;
 }
 
 .main button {
@@ -107,6 +111,128 @@ body {
   cursor: pointer;
 }
 
+/* =========================== LOGIN =========================== */
+.login-container {
+  display: flex;
+  height: 100vh;
+}
+
+.login-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #adcfa6;
+}
+
+.login-image {
+  width: 70%;
+  max-width: 400px;
+  height: auto;
+}
+
+.login-right {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+  background-color: #ffffff;
+  
+}
+
+.login-title {
+  font-size: 60px;
+  font-weight: 700;
+  margin-bottom: 150px;
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.login-bienvenida {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 50px;
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Esto centra los elementos hijos horizontalmente */
+  width: 100%; /* Asegura que el formulario ocupe todo el ancho disponible */
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinea el label al inicio del contenedor */
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+
+
+.input-group label {
+  font-size: 20;
+  margin-bottom: 5px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #F6F0F0;
+  padding-bottom: 20px 20px 20px 20px; /* Espaciado interno */
+  font-size: 18px;
+
+}
+
+.login-form ::placeholder {
+  color: #000000;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.forgot-password a {
+  font-size: 14px;
+  color: #333;
+  text-decoration: line;;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra todo (inputs y botón) */
+    width: 100%;
+}
+
+.signin-button {
+    padding: 12px 40px; /* Más estrecho (ajusta el 40px según prefieras) */
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 10px;
+    /* Elimina width: 100% y max-width para que no ocupe todo el espacio */
+    width: auto; /* El botón se ajusta al contenido */
+}
+
+.signin-button:hover {
+  background-color: #1b5e20;
+}
 
 /* =========================== FOOTER =========================== */
 .footer {
