@@ -157,7 +157,7 @@
       });
 
     // Cargar recolectores (simulado mientras se desarrolla)
-    fetch('https://localhost:7168/api/Recolector')
+    fetch(config.ruta.api + '/api/Recolector')
       .then(res => res.json())
       .then(data => {
         selectRecolector.innerHTML = '';

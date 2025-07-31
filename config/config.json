@@ -1,0 +1,5 @@
+var config = {
+    api {
+        ruta: "https://19215101515:7168/api/"
+    }
+}
