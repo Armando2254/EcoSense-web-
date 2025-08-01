@@ -98,6 +98,106 @@ body {
   background-color: #f6f6f6;
 }
 
+/* =========================== BUSCADOR Y ACCIONES =========================== */
+.search-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 60px;
+  background-color: #e0e0e0; /* gris claro */
+  border-bottom: 2px solid #ccc;
+}
+
+.search-container input[type="text"] {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  margin-right: 20px;
+  background-color: #f2f2f2;
+  color: #000;
+}
+
+.search-container button {
+  padding: 12px 20px;
+  margin-left: 10px;
+  font-size: 16px;
+  background-color: #bdbdbd; /* gris medio */
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-container button:hover {
+  background-color: #9e9e9e; /* gris más oscuro */
+}
+
+/* =========================== TABLA DE CONTENEDORES =========================== */
+.table-container {
+  padding: 40px 60px;
+  overflow-x: auto;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table-container th, .table-container td {
+  padding: 16px;
+  text-align: left;
+  font-size: 15px;
+  color: #000;
+  border-bottom: 1px solid #ccc;
+}
+
+.table-container th {
+  background-color: #d6d6d6; /* gris más intenso */
+  font-weight: bold;
+}
+
+.table-container tr:hover {
+  background-color: #e0e0e0;
+}
+
+/* =========================== BOTONES EN LA TABLA =========================== */
+.btn-editar, .btn-eliminar {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-editar {
+  background-color: #cfcfcf;
+  color: #000;
+}
+
+.btn-editar:hover {
+  background-color: #a4a4a4;
+}
+
+.btn-eliminar {
+  background-color: #e0b4b4;
+  color: #000;
+}
+
+.btn-eliminar:hover {
+  background-color: #cc8e8e;
+}
+
+
+
+
+
 /* =========================== FOOTER =========================== */
 .footer {
   display: flex;
