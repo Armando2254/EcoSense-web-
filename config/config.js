@@ -1,3 +1,3 @@
-var settings = {
-    apiUrl: 'http://localhost:5062/api/'
+window.settings = {
+  apiUrl: 'https://localhost:7168/api/'
 };

@@ -7,7 +7,7 @@ function iniciarMap() {
     center: centroInicial
   });
 
-  fetch('https://172.10.101.168:7168/api/Contenedor')
+  fetch(window.settings.apiUrl+'Contenedor')
     .then(response => {
       if (!response.ok) {
         throw new Error("Error al obtener los datos de los contenedores");

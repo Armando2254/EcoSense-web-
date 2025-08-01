@@ -6,7 +6,6 @@
   <title>Gestión de Contenedores</title>
   <style>
     * {
-
       box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
@@ -99,9 +98,42 @@
       width: 100%;
       height: 100%;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-start;
+      justify-content: stretch;
       padding: 20px;
+      gap: 10px;
+    }
+
+    .navbar {
+      display: flex;
+      background: #fff;
+      padding: 10px 20px;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+    .navbar .eco {
+      font-weight: bold;
+      font-size: 24px;
+      margin-right: auto;
+    }
+    .navbar .opciones {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      padding: 0;
+      margin: 0;
+    }
+    .navbar .opcion a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background .2s;
+    }
+    .navbar .opcion a:hover {
+      background: #e0e0e0;
     }
   </style>
 </head>
@@ -113,60 +145,83 @@
       <li class="opcion"><a href="servicios.html">Route</a></li>
       <li class="opcion"><a href="contacto.html">Statics</a></li>
       <li class="opcion"><a href="contacto.html">Trash Cans</a></li>
-
     </ul>
   </nav>
+
   <div class="ola">
+    <div class="left">
+      <h2>Contenedores críticos</h2>
+      <div id="contenedores-lista"></div>
+    </div>
 
-  <div class="left">
-    <h2>Contenedores críticos</h2>
-    <div id="contenedores-lista"></div>
+    <div class="right">
+      <div class="top-right">
+        <h2>Contenedores asignados</h2>
+        <div id="contenedores-asignados"></div>
+      </div>
+      <div class="bottom-right">
+        <h2>Asignar a recolector</h2>
+        <select id="select-recolector">
+          <option value="">Cargando recolectores...</option>
+        </select>
+        <button class="assign-btn">Asignar</button>
+      </div>
+    </div>
   </div>
 
-  <div class="right">
-    <div class="top-right">
-      <h2>Contenedores asignados</h2>
-      <div id="contenedores-asignados"></div>
-    </div>
-    <div class="bottom-right">
-      <h2>Asignar a recolector</h2>
-      <select id="select-recolector">
-        <option value="">Cargando recolectores...</option>
-      </select>
-      <button class="assign-btn">Asignar</button>
-    </div>
-  </div>
-</div>
   <script>
     const contenedoresLista = document.getElementById('contenedores-lista');
     const contenedoresAsignados = document.getElementById('contenedores-asignados');
     const selectRecolector = document.getElementById('select-recolector');
+    const assignBtn = document.querySelector('.assign-btn');
+
+    const ENDPOINT_CONTENEDORES = 'https://localhost:7168/api/Contenedor';
+    const ENDPOINT_RECOLECTOR = 'https://localhost:7168/api/Recolector';
+    const ENDPOINT_RUTAS = 'https://localhost:7168/api/Rutas';
+    const ADMIN_ID_STATIC = "6875f6019877679620b5db24"; // administrador fijo
 
     let contenedores = [];
     let asignados = [];
 
-    // Cargar contenedores de la API
-    fetch('https://localhost:7168/api/Contenedor')
-      .then(res => res.json())
+    // Cargar contenedores críticos
+    fetch(ENDPOINT_CONTENEDORES)
+      .then(res => {
+        if (!res.ok) throw new Error("Error al cargar contenedores");
+        return res.json();
+      })
       .then(data => {
-        contenedores = data.filter(c => c.porcentajeActual >= 80);
+        contenedores = Array.isArray(data)
+          ? data.filter(c => {
+              // algunos objetos pueden tener key porcentajeActual, asegurarse
+              const pct = parseFloat(c.porcentajeActual);
+              return !isNaN(pct) && pct >= 80;
+            })
+          : [];
         renderContenedores();
       })
       .catch(err => {
         console.error("Error cargando contenedores:", err);
+        contenedoresLista.innerHTML = '<p style="color:red;">No se pudieron cargar los contenedores.</p>';
       });
 
-    // Cargar recolectores (simulado mientras se desarrolla)
-    fetch(config.ruta.api + '/api/Recolector')
-      .then(res => res.json())
+    // Cargar recolectores
+    fetch(ENDPOINT_RECOLECTOR)
+      .then(res => {
+        if (!res.ok) throw new Error("Error al cargar recolectores");
+        return res.json();
+      })
       .then(data => {
-        selectRecolector.innerHTML = '';
-        data.forEach(r => {
-          const option = document.createElement('option');
-          option.value = r.id;
-          option.textContent = r.nombrePila +" "+ r.primerApell +" "+ r.segundoApell;
-          selectRecolector.appendChild(option);
-        });
+        selectRecolector.innerHTML = '<option value="">-- Selecciona recolector --</option>';
+        if (Array.isArray(data)) {
+          data.forEach(r => {
+            const option = document.createElement('option');
+            const id = r.id || r._id || r.Id || "";
+            option.value = id;
+            const nombre = [r.nombrePila, r.primerApell, r.segundoApell].filter(Boolean).join(" ");
+            option.textContent = nombre || id;
+            selectRecolector.appendChild(option);
+          });
+        }
       })
       .catch(err => {
         console.error("Error cargando recolectores:", err);
@@ -196,10 +251,10 @@
       const content = document.createElement('div');
       content.className = 'card-content';
       content.innerHTML = `
-        <strong>${contenedor.nombre}</strong><br>
-        Ubicación: ${contenedor.ubicacion.nombre}<br>
-        Porcentaje: ${contenedor.porcentajeActual.toFixed(2)}%<br>
-        Status: ${contenedor.status}
+        <strong>${contenedor.nombre || 'Sin nombre'}</strong><br>
+        Ubicación: ${contenedor.ubicacion?.nombre || '—'}<br>
+        Porcentaje: ${typeof contenedor.porcentajeActual === 'number' ? contenedor.porcentajeActual.toFixed(2) : contenedor.porcentajeActual}%<br>
+        Status: ${contenedor.status || '—'}
       `;
 
       const button = document.createElement('button');
@@ -207,16 +262,29 @@
 
       if (tipo === '+') {
         button.addEventListener('click', () => {
-          asignados.push(contenedor);
-          contenedores = contenedores.filter(c => c.id !== contenedor.id);
-          renderContenedores();
-          renderAsignados();
+          // evitar duplicados
+          if (!asignados.find(a => (a.id || a._id || a.Id) === (contenedor.id || contenedor._id || contenedor.Id))) {
+            asignados.push(contenedor);
+            contenedores = contenedores.filter(c => {
+              const cid = c.id || c._id || c.Id;
+              const target = contenedor.id || contenedor._id || contenedor.Id;
+              return cid !== target;
+            });
+            renderContenedores();
+            renderAsignados();
+          }
         });
       } else {
         button.classList.add('remove');
         button.addEventListener('click', () => {
-          contenedores.push(contenedor);
-          asignados = asignados.filter(c => c.id !== contenedor.id);
+          if (!contenedores.find(c => (c.id || c._id || c.Id) === (contenedor.id || contenedor._id || contenedor.Id))) {
+            contenedores.push(contenedor);
+          }
+          asignados = asignados.filter(c => {
+            const cid = c.id || c._id || c.Id;
+            const target = contenedor.id || contenedor._id || contenedor.Id;
+            return cid !== target;
+          });
           renderContenedores();
           renderAsignados();
         });
@@ -227,14 +295,59 @@
       return card;
     }
 
-    // El botón de "Asignar" aún no hace nada
-    document.querySelector('.assign-btn').addEventListener('click', () => {
+    assignBtn.addEventListener('click', () => {
       const recolectorId = selectRecolector.value;
       if (!recolectorId) {
         alert("Selecciona un recolector.");
         return;
       }
-      alert("Asignación simulada. (Funcionalidad en desarrollo)");
+      if (!Array.isArray(asignados) || asignados.length === 0) {
+        alert("No hay contenedores asignados para crear la ruta.");
+        return;
+      }
+
+      // Construir payload
+      const contenedoresIds = asignados.map(c => c.id || c._id || c.Id).filter(Boolean);
+      const nowISO = new Date().toISOString().replace(/\.\d{3}Z$/, "Z"); // ejemplo: 2025-08-01T12:34:56Z
+
+      const payload = {
+        IDRecolector: recolectorId,
+        IDAdministrador: ADMIN_ID_STATIC,
+        contenedores: contenedoresIds,
+        fechaAsignacion: nowISO
+      };
+
+      console.log("Payload nueva ruta:", payload);
+
+      fetch(ENDPOINT_RUTAS, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(async res => {
+          if (!res.ok) {
+            const t = await res.text();
+            console.error("Error creando ruta:", t);
+            alert("Error al crear ruta: " + (t || res.statusText));
+            return;
+          }
+          // intentar parsear respuesta (puede devolver la ruta creada)
+          let created = null;
+          const contentType = res.headers.get("Content-Type") || "";
+          if (contentType.includes("application/json")) {
+            created = await res.json();
+          }
+          alert("Ruta creada correctamente." + (created?.id ? " ID: " + created.id : ""));
+          // opcional: limpiar asignados
+          asignados = [];
+          renderAsignados();
+        })
+        .catch(err => {
+          console.error("Falló solicitud POST:", err);
+          alert("Falló la creación de la ruta.");
+        });
     });
   </script>
 

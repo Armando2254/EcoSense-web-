@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ecosense - Panel de Rutas</title>
+  
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -144,12 +145,14 @@
     </footer>
   </div>
 
+<script src="/config/config.js"></script>
   <script>
-    const BASE_ENRIQUECIDAS = "https://localhost:7168/api/Rutas/enriquecidas";
-    const BASE_SIMPLE = "https://localhost:7168/api/Rutas";
-    const ENDPOINT_CONTENEDORES = "https://localhost:7168/api/Contenedor";
-    const ENDPOINT_ADMIN = "https://localhost:7168/api/Administrador";
-    const ENDPOINT_RECOLECTOR = "https://localhost:7168/api/Recolector";
+    console.log(window.settings.apiUrl);
+    const BASE_ENRIQUECIDAS = window.settings.apiUrl+"Rutas/enriquecidas";
+    const BASE_SIMPLE = window.settings.apiUrl+"Rutas";
+    const ENDPOINT_CONTENEDORES = window.settings.apiUrl+"Contenedor";
+    const ENDPOINT_ADMIN = window.settings.apiUrl+"Administrador";
+    const ENDPOINT_RECOLECTOR = window.settings.apiUrl+"Recolector";
     const ADMIN_ID_STATIC = "6875f6019877679620b5db24";
 
     const rutasContainer = document.getElementById("rutas-container");
@@ -207,7 +210,7 @@
 
     function setupBotonesAccion() {
       document.getElementById("crear-ruta").addEventListener("click", () => {
-        window.location.href = "crear-ruta.html";
+        window.location.href = "index2.html";
       });
       document.getElementById("modificar-ruta").addEventListener("click", () => {
         abrirModal("modificar");
