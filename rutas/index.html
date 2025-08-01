@@ -1,128 +1,422 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecosense</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ecosense - Panel de Rutas</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
-
-    
-    <div class="container">
+  <div class="container">
     <nav class="navbar">
-    <p class="eco">Panel de Rutas</p>
-    <ul class="opciones">
+      <p class="eco">Panel de Rutas</p>
+      <ul class="opciones">
         <li class="opcion"><a href="index.html">Home</a></li>
         <li class="opcion"><a href="servicios.html">Map</a></li>
         <li class="opcion"><a href="/rutas/index.html">Statics</a></li>
         <img class="picture-user" src="../assets/images/PicUser.png" alt="UserPicture">
-    </ul>
+      </ul>
     </nav>
 
-
-
-
     <main class="main">
-  <div class="container-rutas">
-    
-    <!-- Izquierda: Tarjetas -->
-    <div class="left-panel">
-      <h2>Rutas registradas</h2>
-      <div id="rutas-container" class="tarjetas-scroll"></div>
+      <div class="container-rutas">
+        <!-- Izquierda: Filtros + Tarjetas -->
+        <div class="left-panel">
+          <h2>Rutas registradas</h2>
+          <div style="margin:10px 0;">
+            <button id="btn-todas" class="btn-filtro active">Todas las rutas</button>
+            <button id="btn-mias" class="btn-filtro inactive">Mis rutas</button>
+          </div>
+          <div id="rutas-container" class="tarjetas-scroll"></div>
+        </div>
+
+        <!-- Derecha: Acciones -->
+        <div class="right-panel">
+          <button id="crear-ruta" class="btn-ruta crear">Crear ruta</button>
+          <button id="modificar-ruta" class="btn-ruta modificar">Modificar ruta</button>
+          <button id="eliminar-ruta" class="btn-ruta eliminar">Eliminar ruta</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal: Modificar Ruta -->
+    <div id="modal-modificar" class="modal-backdrop">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Modificar Ruta</h3>
+          <button class="close-btn" data-close="modificar">&times;</button>
+        </div>
+        <div class="form-group">
+          <label for="select-ruta-modificar">Selecciona ruta</label>
+          <select id="select-ruta-modificar">
+            <option value="">Cargando...</option>
+          </select>
+        </div>
+        <div id="form-modificar">
+          <div class="form-group">
+            <label for="input-id">ID (no editable)</label>
+            <input type="text" id="input-id" disabled />
+          </div>
+          <div class="form-group">
+            <label for="input-id-recolector">ID Recolector</label>
+            <input type="text" id="input-id-recolector" />
+          </div>
+          <div class="form-group">
+            <label for="input-id-administrador">ID Administrador</label>
+            <input type="text" id="input-id-administrador" />
+          </div>
+          <div class="form-group">
+            <label for="input-contenedores">Contenedores (coma separado)</label>
+            <input type="text" id="input-contenedores" placeholder="ej: A1,B2,C3" />
+          </div>
+          <div class="form-group">
+            <label for="input-fecha">Fecha de asignación</label>
+            <input type="text" id="input-fecha" disabled />
+          </div>
+          <div class="form-actions">
+            <button id="guardar-modificacion" class="primary-btn save">Asignar ruta</button>
+            <button class="secondary-btn" data-close="modificar">Cancelar</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Derecha: Botones -->
-    <div class="right-panel">
-      <button class="btn-ruta crear">Crear ruta</button>
-      <button class="btn-ruta modificar">Modificar ruta</button>
-      <button class="btn-ruta eliminar">Eliminar ruta</button>
+    <!-- Modal: Eliminar Ruta -->
+    <div id="modal-eliminar" class="modal-backdrop">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Eliminar Ruta</h3>
+          <button class="close-btn" data-close="eliminar">&times;</button>
+        </div>
+        <div class="form-group">
+          <label for="select-ruta-eliminar">Selecciona ruta a eliminar</label>
+          <select id="select-ruta-eliminar">
+            <option value="">Cargando...</option>
+          </select>
+        </div>
+        <div id="info-ruta-eliminar" style="margin-top:10px;">
+          <!-- Se llena dinámicamente con admin, recolector, fecha -->
+        </div>
+        <div class="form-actions">
+          <button id="confirmar-eliminacion" class="primary-btn delete">Borrar</button>
+          <button class="secondary-btn" data-close="eliminar">Cancelar</button>
+        </div>
+      </div>
     </div>
-
-  </div>
-</main>
-
-
-
-
-
-
-
-
-
 
     <footer class="footer">
-    <!-- Bloque Izquierdo: Título + Redes -->
-    <div class="footer-left">
+      <div class="footer-left">
         <div class="social-icons">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
         </div>
-    </div>
-
-    <!-- Bloque Derecho: Columnas -->
-    <div class="footer-right">
+      </div>
+      <div class="footer-right">
         <div class="footer-columns">
-        <div class="column">
+          <div class="column">
             <h4>Proyecto</h4>
             <p>Visión</p>
             <p>Misión</p>
             <p>Objetivos</p>
-        </div>
-        <div class="column">
+          </div>
+          <div class="column">
             <h4>Soporte</h4>
             <p>FAQ</p>
             <p>Contacto</p>
             <p>Ayuda</p>
-        </div>
-        <div class="column">
+          </div>
+          <div class="column">
             <h4>Legal</h4>
             <p>Términos</p>
             <p>Privacidad</p>
             <p>Licencias</p>
+          </div>
         </div>
-        </div>
-    </div>
+      </div>
     </footer>
+  </div>
 
-
-    </div>
-
-
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
+  <script>
+    // URLs base (ajusta según tu API real)
+    const BASE = "https://localhost:7168/api/Rutas";
     const rutasContainer = document.getElementById("rutas-container");
+    const btnTodas = document.getElementById("btn-todas");
+    const btnMias = document.getElementById("btn-mias");
+    let rutasCache = []; // conservar rutas cargadas
+    let modo = "todas"; // "todas" o "mias"
 
-    fetch("https://localhost:7168/api/Rutas")
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json();
-      })
-      .then(data => {
-        data.forEach(ruta => {
-          const card = document.createElement("div");
-          card.className = "tarjeta";
-          card.innerHTML = `
-            <strong>${ruta.nombre}</strong><br>
-            ID: ${ruta.id}<br>
-            Estado: ${ruta.estado}
-          `;
-          rutasContainer.appendChild(card);
-        });
-      })
-      .catch(err => {
-        console.error("Error al cargar rutas:", err);
-        rutasContainer.innerHTML = `<p style="color: red;">No se pudieron cargar las rutas.</p>`;
+    // Modales
+    const modalModificar = document.getElementById("modal-modificar");
+    const modalEliminar = document.getElementById("modal-eliminar");
+
+    // Inicialización
+    document.addEventListener("DOMContentLoaded", () => {
+      cargarTodasRutas();
+      setupFiltros();
+      setupBotonesAccion();
+      setupModales();
+    });
+
+    function setupFiltros() {
+      btnTodas.addEventListener("click", () => {
+        modo = "todas";
+        btnTodas.classList.add("active");
+        btnTodas.classList.remove("inactive");
+        btnMias.classList.remove("active");
+        btnMias.classList.add("inactive");
+        cargarTodasRutas();
       });
-  });
-</script>
+      btnMias.addEventListener("click", () => {
+        modo = "mias";
+        btnMias.classList.add("active");
+        btnMias.classList.remove("inactive");
+        btnTodas.classList.remove("active");
+        btnTodas.classList.add("inactive");
+        const ejemploId = prompt("Ingresa tu ID para filtrar tus rutas:"); // puedes reemplazar por UI más fina
+        if (ejemploId) {
+          cargarMisRutas(ejemploId);
+        } else {
+          rutasContainer.innerHTML = "<p style='color: #555;'>No se proporcionó ID.</p>";
+        }
+      });
+    }
 
+    function setupBotonesAccion() {
+      document.getElementById("crear-ruta").addEventListener("click", () => {
+        // Redirige a página de creación (ajusta nombre y ruta)
+        window.location.href = "index2.html";
+      });
+      document.getElementById("modificar-ruta").addEventListener("click", () => {
+        abrirModal("modificar");
+      });
+      document.getElementById("eliminar-ruta").addEventListener("click", () => {
+        abrirModal("eliminar");
+      });
+    }
 
-    </body>
-    </html>
+    function setupModales() {
+      // Cerrar botones
+      document.querySelectorAll('[data-close="modificar"]').forEach(el => {
+        el.addEventListener("click", () => cerrarModal("modificar"));
+      });
+      document.querySelectorAll('[data-close="eliminar"]').forEach(el => {
+        el.addEventListener("click", () => cerrarModal("eliminar"));
+      });
+      document.querySelector('.close-btn[data-close="modificar"]').addEventListener("click", () => cerrarModal("modificar"));
+      document.querySelector('.close-btn[data-close="eliminar"]').addEventListener("click", () => cerrarModal("eliminar"));
+
+      // Select modificar
+      const selectModificar = document.getElementById("select-ruta-modificar");
+      selectModificar.addEventListener("change", () => {
+        const id = selectModificar.value;
+        if (!id) return;
+        const ruta = rutasCache.find(r => r.id === id || r.Id === id);
+        if (ruta) rellenarFormularioModificar(ruta);
+      });
+
+      document.getElementById("guardar-modificacion").addEventListener("click", () => {
+        guardarModificacion();
+      });
+
+      // Select eliminar
+      const selectEliminar = document.getElementById("select-ruta-eliminar");
+      selectEliminar.addEventListener("change", () => {
+        const id = selectEliminar.value;
+        if (!id) return;
+        const ruta = rutasCache.find(r => r.id === id || r.Id === id);
+        mostrarInfoEliminar(ruta);
+      });
+
+      document.getElementById("confirmar-eliminacion").addEventListener("click", () => {
+        confirmarEliminar();
+      });
+    }
+
+    // Cargar todas las rutas
+    function cargarTodasRutas() {
+      rutasContainer.innerHTML = "<p>Cargando rutas...</p>";
+      fetch(BASE)
+        .then(res => {
+          if (!res.ok) throw new Error("Error al obtener rutas");
+          return res.json();
+        })
+        .then(data => {
+          rutasCache = data;
+          renderizarRutas(data);
+          poblarSelects(data);
+        })
+        .catch(err => {
+          console.error(err);
+          rutasContainer.innerHTML = "<p style='color:red;'>No se pudieron cargar las rutas.</p>";
+        });
+    }
+
+    // Cargar mis rutas (placeholder: ajusta endpoint real)
+    function cargarMisRutas(idRecolector) {
+      rutasContainer.innerHTML = "<p>Cargando tus rutas...</p>";
+      // Este endpoint es un ejemplo; cámbialo al real que acepta ID y filtra
+      fetch(`${BASE}/mis/${encodeURIComponent(idRecolector)}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Error al obtener tus rutas");
+          return res.json();
+        })
+        .then(data => {
+          rutasCache = data;
+          renderizarRutas(data);
+          poblarSelects(data); // si deseas sólo esas rutas para modificar/eliminar
+        })
+        .catch(err => {
+          console.error(err);
+          rutasContainer.innerHTML = "<p style='color:red;'>No se pudieron cargar tus rutas.</p>";
+        });
+    }
+
+    function renderizarRutas(rutas) {
+      rutasContainer.innerHTML = "";
+      if (!Array.isArray(rutas) || rutas.length === 0) {
+        rutasContainer.innerHTML = "<p>No hay rutas para mostrar.</p>";
+        return;
+      }
+      rutas.forEach(ruta => {
+        const card = document.createElement("div");
+        card.className = "tarjeta";
+        const id = ruta.id || ruta.Id || "—";
+        const recolector = ruta.IDRecolector || ruta.idRecolector || "—";
+        const admin = ruta.IDAdministrador || ruta.idAdministrador || "—";
+        const fecha = ruta.fechaAsignacion || ruta.FechaAsignacion || "—";
+        const contenedores = ruta.contenedores || ruta.Contenedores || [];
+        card.innerHTML = `
+          <strong>Ruta ID: ${id}</strong>
+          <div><span class="badge">Recolector: ${recolector}</span><span class="badge">Administrador: ${admin}</span></div>
+          <p>Fecha asignación: ${new Date(fecha).toLocaleString()}</p>
+          <p>Contenedores: ${Array.isArray(contenedores) ? contenedores.join(", ") : contenedores}</p>
+        `;
+        rutasContainer.appendChild(card);
+      });
+    }
+
+    function poblarSelects(rutas) {
+      // Evita duplicar si ya están cargados en el modal abierto
+      const modificar = document.getElementById("select-ruta-modificar");
+      const eliminar = document.getElementById("select-ruta-eliminar");
+      const opciones = rutas.map(ruta => {
+        const id = ruta.id || ruta.Id;
+        return `<option value="${id}">${id}</option>`;
+      }).join("");
+      if (modificar) modificar.innerHTML = `<option value="">-- selecciona --</option>` + opciones;
+      if (eliminar) eliminar.innerHTML = `<option value="">-- selecciona --</option>` + opciones;
+    }
+
+    function abrirModal(tipo) {
+      if (tipo === "modificar") {
+        modalModificar.style.display = "flex";
+        // si no hay rutas cargadas, recargarlas
+        if (!rutasCache || rutasCache.length === 0) cargarTodasRutas();
+      } else if (tipo === "eliminar") {
+        modalEliminar.style.display = "flex";
+        if (!rutasCache || rutasCache.length === 0) cargarTodasRutas();
+      }
+    }
+    function cerrarModal(tipo) {
+      if (tipo === "modificar") modalModificar.style.display = "none";
+      if (tipo === "eliminar") modalEliminar.style.display = "none";
+    }
+
+    function rellenarFormularioModificar(ruta) {
+      const id = ruta.id || ruta.Id || "";
+      document.getElementById("input-id").value = id;
+      document.getElementById("input-id-recolector").value = ruta.IDRecolector || ruta.idRecolector || "";
+      document.getElementById("input-id-administrador").value = ruta.IDAdministrador || ruta.idAdministrador || "";
+      const cont = ruta.contenedores || ruta.Contenedores || [];
+      document.getElementById("input-contenedores").value = Array.isArray(cont) ? cont.join(",") : cont;
+      const fecha = ruta.fechaAsignacion || ruta.FechaAsignacion || "";
+      document.getElementById("input-fecha").value = new Date(fecha).toLocaleString();
+    }
+
+    function guardarModificacion() {
+      const id = document.getElementById("input-id").value;
+      if (!id) {
+        alert("Selecciona primero una ruta válida.");
+        return;
+      }
+      const recolector = document.getElementById("input-id-recolector").value.trim();
+      const administrador = document.getElementById("input-id-administrador").value.trim();
+      const contenedoresRaw = document.getElementById("input-contenedores").value.trim();
+      const contenedores = contenedoresRaw ? contenedoresRaw.split(",").map(c => c.trim()) : [];
+
+      const payload = {
+        IDRecolector: recolector,
+        IDAdministrador: administrador,
+        contenedores: contenedores,
+        // No enviamos fechaAsignacion porque no debe cambiarse según tu requisito
+      };
+
+      fetch(`${BASE}/${encodeURIComponent(id)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+        .then(res => {
+          if (!res.ok) throw new Error("Error al actualizar ruta");
+          return res.json();
+        })
+        .then(updated => {
+          alert("Ruta actualizada correctamente.");
+          cerrarModal("modificar");
+          // refrescar vista
+          if (modo === "todas") cargarTodasRutas();
+          else {
+            // si estás en "mias" podrías reaplicar el filtro anterior; aquí se recarga todo
+            cargarTodasRutas();
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Falló la actualización de la ruta.");
+        });
+    }
+
+    function mostrarInfoEliminar(ruta) {
+      if (!ruta) return;
+      const admin = ruta.IDAdministrador || ruta.idAdministrador || "—";
+      const recolector = ruta.IDRecolector || ruta.idRecolector || "—";
+      const fecha = ruta.fechaAsignacion || ruta.FechaAsignacion || "";
+      const infoDiv = document.getElementById("info-ruta-eliminar");
+      infoDiv.innerHTML = `
+        <p><strong>Administrador que asignó:</strong> ${admin}</p>
+        <p><strong>Recolector actual:</strong> ${recolector}</p>
+        <p><strong>Fecha de asignación:</strong> ${new Date(fecha).toLocaleString()}</p>
+      `;
+    }
+
+    function confirmarEliminar() {
+      const select = document.getElementById("select-ruta-eliminar");
+      const id = select.value;
+      if (!id) {
+        alert("Selecciona una ruta para eliminar.");
+        return;
+      }
+      if (!confirm("¿Estás seguro de eliminar esta ruta? Esta acción es irreversible.")) return;
+
+      fetch(`${BASE}/${encodeURIComponent(id)}`, {
+        method: "DELETE"
+      })
+        .then(res => {
+          if (!res.ok) throw new Error("Error al eliminar ruta");
+          alert("Ruta eliminada.");
+          cerrarModal("eliminar");
+          if (modo === "todas") cargarTodasRutas();
+          else cargarTodasRutas();
+        })
+        .catch(err => {
+          console.error(err);
+          alert("No se pudo eliminar la ruta.");
+        });
+    }
+  </script>
+</body>
+</html>
