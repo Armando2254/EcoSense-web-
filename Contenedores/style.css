@@ -1,28 +1,29 @@
 /* =========================== FUENTES PERSONALIZADAS =========================== */
 @font-face {
-  font-family: 'Work-Sans'; /* Fuente base regular */
+  font-family: 'Work-Sans';
   src: url('../assets/fonts/WorkSans-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Work-Sans-Black'; /* Fuente extra bold (bien gruesa) */
+  font-family: 'Work-Sans-Black';
   src: url('../assets/fonts/Work-Sans-Black.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Work-Sans-Medium'; /* Fuente intermedia, entre regular y bold */
+  font-family: 'Work-Sans-Medium';
   src: url('../assets/fonts/WorkSans-Medium.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Work-Sans-Bold'; /* Fuente en negrita */
+  font-family: 'Work-Sans-Bold';
   src: url('../assets/fonts/WorkSans-Bold.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Work-Sans-SemiBold'; /* Semi bold, más marcada que medium pero menos que bold */
+  font-family: 'Work-Sans-SemiBold';
   src: url('../assets/fonts/WorkSans-SemiBold.ttf') format('truetype');
 }
+
 /* =========================== RESET GENERAL =========================== */
 * {
   margin: 0;
@@ -32,6 +33,8 @@
 
 body {
   font-family: 'Work-Sans', sans-serif;
+  background-color: #f6f6f6;
+  color: #000000;
 }
 
 /* =========================== ESTRUCTURA PRINCIPAL =========================== */
@@ -46,6 +49,7 @@ body {
   display: flex;
   width: 100%;
   height: 100px;
+  background-color: #eaeaea;
 }
 
 .eco {
@@ -95,108 +99,114 @@ body {
 
 /* =========================== SECCIÓN PRINCIPAL =========================== */
 .main {
-  background-color: #f6f6f6;
+  padding: 40px;
+  background-color: #adcfa6;
 }
 
-/* =========================== BUSCADOR Y ACCIONES =========================== */
-.search-container {
+/* =========================== SECCIÓN DE BUSQUEDA Y BOTONES =========================== */
+.search-section {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
-  padding: 30px 60px;
-  background-color: #e0e0e0; /* gris claro */
-  border-bottom: 2px solid #ccc;
+  gap: 15px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #eeeeee;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.search-container input[type="text"] {
+.search-section input[type="text"] {
   flex: 1;
+  min-width: 240px;
   padding: 12px 16px;
+  border: 2px solid #cccccc;
+  border-radius: 10px;
   font-size: 16px;
-  border: 1px solid #aaa;
-  border-radius: 8px;
-  margin-right: 20px;
-  background-color: #f2f2f2;
-  color: #000;
+  background-color: #fdfdfd;
+  color: #000000;
+  outline: none;
+  transition: border-color 0.3s;
 }
 
-.search-container button {
-  padding: 12px 20px;
-  margin-left: 10px;
-  font-size: 16px;
-  background-color: #bdbdbd; /* gris medio */
-  color: #000;
+.search-section input[type="text"]:focus {
+  border-color: #999;
+  background-color: #ffffff;
+}
+
+.search-section button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  font-size: 15px;
+  font-family: 'Work-Sans-Medium', sans-serif;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  background-color: #dcdcdc;
+  color: #000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.search-container button:hover {
-  background-color: #9e9e9e; /* gris más oscuro */
+.search-section button:hover {
+  background-color: #bdbdbd;
+  transform: translateY(-1px);
 }
+
+.search-section button:active {
+  transform: scale(0.97);
+}
+
+.btn-search i {
+  color: #444;
+}
+
+.btn-edit {
+  background-color: #cfcfcf;
+}
+.btn-edit:hover {
+  background-color: #b3b3b3;
+}
+
+.btn-delete {
+  background-color: #e3a8a8;
+}
+.btn-delete:hover {
+  background-color: #ce7d7d;
+}
+
+
 
 /* =========================== TABLA DE CONTENEDORES =========================== */
 .table-container {
-  padding: 40px 60px;
   overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(132, 42, 42, 0.1);
 }
 
-.table-container table {
+table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.table-container th, .table-container td {
-  padding: 16px;
-  text-align: left;
-  font-size: 15px;
+  background-color: #ffffff;
   color: #000;
-  border-bottom: 1px solid #ccc;
+  font-size: 16px;
 }
 
-.table-container th {
-  background-color: #d6d6d6; /* gris más intenso */
-  font-weight: bold;
-}
-
-.table-container tr:hover {
+thead {
   background-color: #e0e0e0;
 }
 
-/* =========================== BOTONES EN LA TABLA =========================== */
-.btn-editar, .btn-eliminar {
-  padding: 8px 14px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+th, td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
-.btn-editar {
-  background-color: #cfcfcf;
-  color: #000;
+tbody tr:hover {
+  background-color: #f0f0f0;
 }
-
-.btn-editar:hover {
-  background-color: #a4a4a4;
-}
-
-.btn-eliminar {
-  background-color: #e0b4b4;
-  color: #000;
-}
-
-.btn-eliminar:hover {
-  background-color: #cc8e8e;
-}
-
-
-
-
 
 /* =========================== FOOTER =========================== */
 .footer {
