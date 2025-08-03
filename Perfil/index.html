@@ -20,7 +20,7 @@
         <li class="opcion"><a href="../Estadisticas/index.html">Estadísticas</a></li>
         <li class="opcion"><a href="../Recolectores/index.html">Recolectores</a></li>
         <li class="opcion"><a href="../rutas/index.html">Rutas</a></li>
-        <li class="opcion"><a href="../Perfil/index.html">Perfil</a></li>
+        <li class="opcion"><a href="../Perfil/index.html"style="background-color: #adcfa6; color: white;">Perfil</a></li>
         <img class="picture-user" src="../assets/images/PicUser.png" alt="UserPicture">
     </ul>
     </nav>
@@ -29,7 +29,39 @@
 
 
     <main class="main">
+<main class="main">
+    <div class="profile-container">
+        <h1>Perfil del Administrador</h1>
+        <div class="profile-info">
+            <div class="profile-picture">
+                <img id="admin-pic" src="../assets/images/PicUser.png" alt="Foto de perfil">
+            </div>
+            <div class="profile-details">
+                <p><strong>Nombre:</strong> <span id="admin-name"></span></p>
+                <p><strong>Email:</strong> <span id="admin-email"></span></p>
+                <p><strong>Edad:</strong> <span id="admin-age"></span></p>
+            </div>
+        </div>
+        <button id="btn-edit-profile" class="edit-btn">Editar Perfil</button>
+    </div>
 
+    <!-- Modal para editar perfil -->
+    <div id="edit-modal" style="display:none;">
+        <div class="modal-content">
+            <h2>Editar Perfil</h2>
+            <form id="edit-form">
+                <label>Nombre:</label>
+                <input type="text" id="edit-name" required>
+                <label>Email:</label>
+                <input type="email" id="edit-email" required>
+                <label>Edad:</label>
+                <input type="number" id="edit-age" required>
+                <button type="submit">Guardar Cambios</button>
+                <button type="button" id="btn-cancel-edit">Cancelar</button>
+            </form>
+        </div>
+    </div>
+</main>
 </main>
 
 
@@ -95,6 +127,7 @@
   </div>
 </div>
 
+<script src="profile.js"></script>
 
     </body>
     </html>
