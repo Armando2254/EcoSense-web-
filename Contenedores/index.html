@@ -1,197 +1,240 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contenedores</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../assets/images/logoEcoSense.png" type="image/x-icon">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Contenedores</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../config/config.js">
 </head>
 <body>
-  <div class="container">
-    
+    <div class="container">
     <!-- NAVBAR -->
     <nav class="navbar">
-      <p class="eco">Panel de Administrador</p>
-      <ul class="opciones">
+    <p class="eco">Panel de Administrador</p>
+    <ul class="opciones">
         <li class="opcion"><a href="../Contenedores/index.html">Contenedores</a></li>
         <li class="opcion"><a href="../Estadisticas/index.html">Estadísticas</a></li>
         <li class="opcion"><a href="../Recolectores/index.html">Recolectores</a></li>
         <li class="opcion"><a href="../rutas/index.html">Rutas</a></li>
         <li class="opcion"><a href="../Perfil/index.html">Perfil</a></li>
         <img class="picture-user" src="../assets/images/PicUser.png" alt="UserPicture">
-      </ul>
+    </ul>
     </nav>
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- CONTENEDORES -->
     <main class="main">
-<div class="search-section">
-  <input type="text" placeholder="Buscar contenedor por ID" />
-  <button class="btn-search"><i class="fas fa-search"></i> Buscar</button>
-  <button class="btn-edit"><i class="fas fa-edit"></i> Modificar</button>
-  <button class="btn-delete"><i class="fas fa-trash-alt"></i> Eliminar</button>
-</div>
-
-
-      <div class="table-container" id="contenedor-lista">
-        <!-- Contenedores se insertan dinámicamente -->
-      </div>
+    <div style="margin: 20px 0;">
+        <input type="text" id="inputBuscarId" placeholder="Buscar por ID..." style="padding: 8px; width: 250px;" />
+        <button id="btnEliminar" style="padding: 8px 12px;">Eliminar</button>
+        <button id="btnModificar" style="padding: 8px 12px;">Modificar</button>
+    </div>
+    <div id="contenedor-lista"></div>
     </main>
 
+    <!-- FOOTER -->
     <footer class="footer">
-      <div class="footer-left">
+    <div class="footer-left">
         <div class="social-icons">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
         </div>
-      </div>
-      <div class="footer-right">
+    </div>
+    <div class="footer-right">
         <div class="footer-columns">
-          <div class="column">
+        <div class="column">
             <h4>Proyecto</h4>
             <p>Visión</p>
             <p>Misión</p>
             <p>Objetivos</p>
-          </div>
-          <div class="column">
+        </div>
+        <div class="column">
             <h4>Soporte</h4>
             <p>FAQ</p>
             <p>Contacto</p>
             <p>Ayuda</p>
-          </div>
-          <div class="column">
+        </div>
+        <div class="column">
             <h4>Legal</h4>
             <p>Términos</p>
             <p>Privacidad</p>
             <p>Licencias</p>
-          </div>
         </div>
-      </div>
+        </div>
+    </div>
     </footer>
+</div>
 
-    <!-- MODAL DETALLES -->
-    <div id="modalContenedor" class="modal" style="display:none;">
-      <div class="modal-content">
-        <h2 id="modalNombre"></h2>
-        <p><strong>Porcentaje:</strong> <span id="modalPorcentaje"></span>%</p>
-        <p><strong>Ubicación:</strong> <span id="modalUbicacion"></span></p>
-        <p><strong>Latitud:</strong> <span id="modalLatitud"></span></p>
-        <p><strong>Longitud:</strong> <span id="modalLongitud"></span></p>
-        <div class="modal-buttons">
-          <button id="btnCerrarModal">Cerrar</button>
+<!-- MODAL DE VISTA DETALLADA -->
+<div id="modalContenedor" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+    <div style="background:white; padding:20px; border-radius:10px; max-width:400px; width:90%;">
+    <h2 id="modalNombre"></h2>
+    <p><strong>Porcentaje:</strong> <span id="modalPorcentaje"></span>%</p>
+    <p><strong>Ubicación:</strong> <span id="modalUbicacion"></span></p>
+    <p><strong>Latitud:</strong> <span id="modalLatitud"></span></p>
+    <p><strong>Longitud:</strong> <span id="modalLongitud"></span></p>
+    <div style="margin-top:20px; display:flex; justify-content:space-between;">
+        <button id="btnCerrarModal" style="padding:10px 20px;">Cerrar</button>
         </div>
-      </div>
     </div>
+</div>
 
-    <!-- MODAL EDITAR -->
-    <div id="modalEditar" class="modal" style="display:none;">
-      <div class="modal-content">
-        <h2>Editar Contenedor</h2>
-        <input id="editId" type="hidden" />
-        <input id="editNombre" placeholder="Nombre" />
-        <input id="editPorcentaje" type="number" placeholder="Porcentaje" />
-        <input id="editDireccion" placeholder="Dirección" />
-        <input id="editLat" placeholder="Latitud" />
-        <input id="editLng" placeholder="Longitud" />
-        <div class="modal-buttons">
-          <button id="btnGuardarEdicion">Guardar</button>
-          <button onclick="document.getElementById('modalEditar').style.display='none'">Cancelar</button>
-        </div>
-      </div>
+<!-- MODAL DE EDICIÓN -->
+<div id="modalEditar" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+    <div style="background:white; padding:20px; border-radius:10px; max-width:400px; width:90%;">
+    <h2>Editar Contenedor</h2>
+    <input id="editNombre" placeholder="Nombre" style="width:100%; padding:8px; margin-bottom:10px;" />
+    <input id="editPorcentaje" type="number" placeholder="Porcentaje" style="width:100%; padding:8px; margin-bottom:10px;" />
+    <input id="editDireccion" placeholder="Dirección" style="width:100%; padding:8px; margin-bottom:10px;" />
+    <input id="editLat" placeholder="Latitud" style="width:100%; padding:8px; margin-bottom:10px;" />
+    <input id="editLng" placeholder="Longitud" style="width:100%; padding:8px; margin-bottom:10px;" />
+    <div style="display:flex; justify-content:space-between;">
+        <button id="btnGuardarEdicion" style="padding:10px 20px;">Guardar</button>
+        <button onclick="document.getElementById('modalEditar').style.display='none'" style="padding:10px 20px;">Cancelar</button>
     </div>
+    </div>
+</div>
 
-    <script>
-      const apiUrl = "http://localhost:5033/api/contenedor";
+<!-- SCRIPT JS -->
 
-      // Obtener contenedores
-      async function obtenerContenedores() {
-        const res = await fetch(apiUrl);
-        const contenedores = await res.json();
-        const contenedorLista = document.getElementById("contenedor-lista");
-        contenedorLista.innerHTML = "";
-        contenedores.forEach(c => {
-          const tarjeta = document.createElement("div");
-          tarjeta.classList.add("contenedor-card");
-          tarjeta.innerHTML = `
-            <h3>${c.nombre}</h3>
-            <p><strong>ID:</strong> ${c.id}</p>
-            <p><strong>% Llenado:</strong> ${c.porcentaje}%</p>
-            <p><strong>Ubicación:</strong> ${c.ubicacion}</p>
-            <button onclick='verDetalles(${JSON.stringify(c)})'>Ver</button>
-            <button onclick='mostrarEditar(${JSON.stringify(c)})'>Editar</button>
-          `;
-          contenedorLista.appendChild(tarjeta);
+<script src="/config/config.js"></script>
+<script>
+    const API = window.settings.apiUrl+"Contenedor";
+
+    const inputBuscarId = document.getElementById("inputBuscarId");
+    const btnEliminar = document.getElementById("btnEliminar");
+    const btnModificar = document.getElementById("btnModificar");
+    const contenedorLista = document.getElementById("contenedor-lista");
+
+    const modal = document.getElementById("modalContenedor");
+    const modalEditar = document.getElementById("modalEditar");
+
+    const modalNombre = document.getElementById("modalNombre");
+    const modalPorcentaje = document.getElementById("modalPorcentaje");
+    const modalUbicacion = document.getElementById("modalUbicacion");
+    const modalLatitud = document.getElementById("modalLatitud");
+    const modalLongitud = document.getElementById("modalLongitud");
+    const btnCerrarModal = document.getElementById("btnCerrarModal");
+
+    const editNombre = document.getElementById("editNombre");
+    const editPorcentaje = document.getElementById("editPorcentaje");
+    const editDireccion = document.getElementById("editDireccion");
+    const editLat = document.getElementById("editLat");
+    const editLng = document.getElementById("editLng");
+    const btnGuardarEdicion = document.getElementById("btnGuardarEdicion");
+
+    let contenedorEditando = null;
+
+    // Cerrar modal
+    btnCerrarModal.addEventListener("click", () => modal.style.display = "none");
+
+    // Cargar todos
+    fetch(API)
+    .then(res => res.json())
+    .then(data => {
+        data.forEach(c => renderContenedor(c));
+    });
+
+    // Renderizar tarjeta
+    function renderContenedor(c) {
+    const card = document.createElement("div");
+    card.style.border = "1px solid #ccc";
+    card.style.borderRadius = "10px";
+    card.style.padding = "15px";
+    card.style.margin = "10px";
+    card.style.cursor = "pointer";
+    card.style.background = "#f9f9f9";
+
+    card.innerHTML = `
+        <h3>${c.nombre}</h3>
+        <p><strong>Porcentaje:</strong> ${c.porcentajeActual}%</p>
+        <p><strong>ID:</strong> ${c.id}</p>
+    `;
+
+    card.addEventListener("click", () => {
+        modalNombre.textContent = c.nombre;
+        modalPorcentaje.textContent = c.porcentajeActual;
+        modalUbicacion.textContent = c.ubicacion?.direccion || "No especificada";
+        modalLatitud.textContent = c.ubicacion?.lat || "N/A";
+        modalLongitud.textContent = c.ubicacion?.lng || "N/A";
+        modal.style.display = "flex";
+    });
+
+    contenedorLista.appendChild(card);
+    }
+
+    // Eliminar por ID
+    btnEliminar.addEventListener("click", () => {
+    const id = inputBuscarId.value.trim();
+    if (!id) return alert("Ingresa un ID para eliminar.");
+    if (!confirm("¿Estás seguro de eliminar este contenedor?")) return;
+
+    fetch(`${API}/${id}`, { method: "DELETE" })
+        .then(res => {
+        if (res.ok) {
+            alert("Contenedor eliminado.");
+            location.reload();
+        } else {
+            alert("No se encontró el contenedor.");
+        }
         });
-      }
+    });
 
-      // Ver detalles
-      function verDetalles(c) {
-        document.getElementById("modalNombre").textContent = c.nombre;
-        document.getElementById("modalPorcentaje").textContent = c.porcentaje;
-        document.getElementById("modalUbicacion").textContent = c.ubicacion;
-        document.getElementById("modalLatitud").textContent = c.lat;
-        document.getElementById("modalLongitud").textContent = c.lng;
-        document.getElementById("modalContenedor").style.display = "block";
-      }
+    // Modificar por ID (cargar datos)
+    btnModificar.addEventListener("click", () => {
+    const id = inputBuscarId.value.trim();
+    if (!id) return alert("Ingresa un ID para modificar.");
 
-      document.getElementById("btnCerrarModal").addEventListener("click", () => {
-        document.getElementById("modalContenedor").style.display = "none";
-      });
+    fetch(`${API}/${id}`)
+        .then(res => {
+        if (!res.ok) throw new Error("Contenedor no encontrado.");
+        return res.json();
+        })
+        .then(c => {
+        contenedorEditando = c;
+        editNombre.value = c.nombre;
+        editPorcentaje.value = c.porcentajeActual;
+        editDireccion.value = c.ubicacion?.direccion || "";
+        editLat.value = c.ubicacion?.lat || "";
+        editLng.value = c.ubicacion?.lng || "";
+        modalEditar.style.display = "flex";
+        })
+        .catch(err => alert(err.message));
+    });
 
-      // Mostrar modal de edición
-      function mostrarEditar(c) {
-        document.getElementById("editId").value = c.id;
-        document.getElementById("editNombre").value = c.nombre;
-        document.getElementById("editPorcentaje").value = c.porcentaje;
-        document.getElementById("editDireccion").value = c.ubicacion;
-        document.getElementById("editLat").value = c.lat;
-        document.getElementById("editLng").value = c.lng;
-        document.getElementById("modalEditar").style.display = "block";
-      }
+    // Guardar edición
+    btnGuardarEdicion.addEventListener("click", () => {
+    const id = contenedorEditando.id;
+    const updated = {
+        nombre: editNombre.value,
+        porcentajeActual: parseFloat(editPorcentaje.value),
+        ubicacion: {
+        direccion: editDireccion.value,
+        lat: parseFloat(editLat.value),
+        lng: parseFloat(editLng.value),
+        },
+    };
 
-      // Guardar edición
-      document.getElementById("btnGuardarEdicion").addEventListener("click", async () => {
-        const id = document.getElementById("editId").value;
-        const contenedorEditado = {
-          id,
-          nombre: document.getElementById("editNombre").value,
-          porcentaje: parseInt(document.getElementById("editPorcentaje").value),
-          ubicacion: document.getElementById("editDireccion").value,
-          lat: document.getElementById("editLat").value,
-          lng: document.getElementById("editLng").value,
-        };
-        await fetch(`${apiUrl}/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(contenedorEditado),
+    fetch(`${API}/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updated)
+    })
+        .then(res => {
+        if (res.ok) {
+            alert("Contenedor actualizado.");
+            modalEditar.style.display = "none";
+            location.reload();
+        } else {
+            alert("Error al actualizar.");
+        }
         });
-        document.getElementById("modalEditar").style.display = "none";
-        obtenerContenedores();
-      });
-
-      // Eliminar
-      document.getElementById("btnEliminar").addEventListener("click", async () => {
-        const id = document.getElementById("inputBuscarId").value;
-        if (!id) return alert("Ingresa un ID");
-        if (!confirm("¿Estás seguro de eliminar este contenedor?")) return;
-        await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
-        obtenerContenedores();
-      });
-
-      // Modificar (cargar modal)
-      document.getElementById("btnModificar").addEventListener("click", async () => {
-        const id = document.getElementById("inputBuscarId").value;
-        if (!id) return alert("Ingresa un ID");
-        const res = await fetch(`${apiUrl}/${id}`);
-        const c = await res.json();
-        mostrarEditar(c);
-      });
-
-      // Cargar contenedores al iniciar
-      obtenerContenedores();
-    </script>
+    });
+</script>
 </body>
 </html>

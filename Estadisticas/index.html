@@ -7,14 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
     
     <div class="container">
     <nav class="navbar">
-    <p class="eco">Panel de Administrador</p>
+    <p class="eco">Dashboard</p>
     <ul class="opciones">
         <li class="opcion"><a href="../Contenedores/index.html">Contenedores</a></li>
         <li class="opcion"><a href="../Estadisticas/index.html">Estadísticas</a></li>
@@ -28,9 +28,62 @@
 
 
 
-    <main class="main">
+<main class="main">
+  <div class="charts-grid">
+    <!-- 1 -->
+    <section class="chart-card">
+      <h2>Porcentaje promedio por hora (por contenedor)</h2>
+      <div class="controls">
+        <select id="contenedorSelect"></select>
+        <input type="date" id="fechaContenedor" />
+        <button onclick=cargarGraficaContenedor()>Cargar</button>
+      </div>
+      <canvas id="graficaContenedor"></canvas>
+    </section>
 
+    <!-- 2 -->
+    <section class="chart-card">
+      <h2>Porcentaje promedio general por hora</h2>
+      <div class="controls">
+        <input type="date" id="fechaGeneral" />
+        <button onclick=cargarGraficaGeneral()>Cargar</button>
+      </div>
+      <canvas id="graficaGeneral"></canvas>
+    </section>
+
+    <!-- 3 -->
+    <section class="chart-card">
+      <h2>Llenados por semana (general)</h2>
+      <div class="controls">
+        <input type="date" id="fechaSemana" />
+        <button onclick="cargarGraficaSemana()">Cargar</button>
+      </div>
+      <canvas id="graficaSemana"></canvas>
+    </section>
+
+    <!-- 4 -->
+    <section class="chart-card">
+      <h2>Llenados por semana (por contenedor)</h2>
+      <div class="controls">
+        <select id="contenedorSemanaSelect"></select>
+        <input type="date" id="fechaSemanaContenedor" />
+        <button onclick="cargarGraficaSemanaContenedor()">Cargar</button>
+      </div>
+      <canvas id="graficaSemanaContenedor"></canvas>
+    </section>
+
+    <!-- 5 -->
+    <section class="chart-card full-width">
+      <h2>Registros por ubicación (por fecha)</h2>
+      <div class="controls">
+        <input type="date" id="fechaUbicacion" />
+        <button onclick="cargarGraficaUbicacion()">Cargar</button>
+      </div>
+      <canvas id="graficaUbicacion"></canvas>
+    </section>
+  </div>
 </main>
+
 
 
 
@@ -96,5 +149,163 @@
 </div>
 
 
+
+
+<script>
+    let graficaContenedorInstance = null;
+    let graficaGeneralInstance = null;
+    let graficaSemanaInstance = null;
+    let graficaSemanaContenedorInstance = null;
+    let graficaUbicacionInstance = null;
+
+    async function cargarContenedores() {
+      const res = await fetch("http://localhost:7168/api/contenedor");
+      const contenedores = await res.json();
+      const selects = [document.getElementById("contenedorSelect"), document.getElementById("contenedorSemanaSelect")];
+      for (const select of selects) {
+        select.innerHTML = "";
+        contenedores.forEach(c => {
+          const option = document.createElement("option");
+          option.value = c.id;
+          option.textContent = c.nombre || c.id;
+          select.appendChild(option);
+        });
+      }
+    }
+
+    async function cargarGraficaContenedor() {
+      const id = document.getElementById("contenedorSelect").value;
+      const fecha = document.getElementById("fechaContenedor").value;
+      if (!id || !fecha) return;
+
+      const inicio = new Date(fecha);
+      const fin = new Date(inicio);
+      fin.setDate(fin.getDate() + 1);
+
+      const res = await fetch(`http://localhost:7168/api/estadisticaslectura/promedio-por-hora?idContenedor=${id}&fechaInicio=${inicio.toISOString()}&fechaFin=${fin.toISOString()}`);
+      const datos = await res.json();
+
+      const horas = datos.map(d => d.hora);
+      const valores = datos.map(d => d.promedioPorcentaje);
+
+      if (graficaContenedorInstance) graficaContenedorInstance.destroy();
+      graficaContenedorInstance = new Chart(document.getElementById("graficaContenedor"), {
+        type: "line",
+        data: {
+          labels: horas,
+          datasets: [{ label: "Promedio %", data: valores, borderColor: "blue", fill: false }]
+        }
+      });
+    }
+
+    async function cargarGraficaGeneral() {
+      const fecha = document.getElementById("fechaGeneral").value;
+      if (!fecha) return;
+      const inicio = new Date(fecha);
+      const fin = new Date(inicio);
+      fin.setDate(fin.getDate() + 1);
+
+      const res = await fetch(`http://localhost:7168/api/estadisticaslectura/promedio-general-por-hora?fechaInicio=${inicio.toISOString()}&fechaFin=${fin.toISOString()}`);
+      const datos = await res.json();
+
+      const horas = datos.map(d => d.numeroDeHora);
+      const valores = datos.map(d => d.promedioPorcentaje);
+
+      if (graficaGeneralInstance) graficaGeneralInstance.destroy();
+      graficaGeneralInstance = new Chart(document.getElementById("graficaGeneral"), {
+        type: "bar",
+        data: {
+          labels: horas,
+          datasets: [{ label: "Promedio General %", data: valores, backgroundColor: "green" }]
+        }
+      });
+    }
+
+    async function cargarGraficaSemana() {
+      const fecha = document.getElementById("fechaSemana").value;
+      if (!fecha) return;
+      const inicio = new Date(fecha);
+      const fin = new Date(inicio);
+      fin.setDate(fin.getDate() + 7);
+
+      const res = await fetch(`http://localhost:7168/api/estadisticasregistro/llenados-semana-general?inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`);
+      const datos = await res.json();
+
+      const dias = datos.map(d => d.dia);
+      const valores = datos.map(d => d.totalLlenados);
+
+      if (graficaSemanaInstance) graficaSemanaInstance.destroy();
+      graficaSemanaInstance = new Chart(document.getElementById("graficaSemana"), {
+        type: "bar",
+        data: {
+          labels: dias,
+          datasets: [{ label: "Total Llenados", data: valores, backgroundColor: "orange" }]
+        }
+      });
+    }
+
+    async function cargarGraficaSemanaContenedor() {
+      const id = document.getElementById("contenedorSemanaSelect").value;
+      const fecha = document.getElementById("fechaSemanaContenedor").value;
+      if (!id || !fecha) return;
+
+      const inicio = new Date(fecha);
+      const fin = new Date(inicio);
+      fin.setDate(fin.getDate() + 7);
+
+      const res = await fetch(`http://localhost:7168/api/estadisticasregistro/llenados-semana-contenedor?idContenedor=${id}&inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`);
+      const datos = await res.json();
+      console.log("ID del contenedor semana:", id);
+
+      const dias = datos.map(d => d.dia);
+      const valores = datos.map(d => d.totalLlenados);
+
+      if (graficaSemanaContenedorInstance) graficaSemanaContenedorInstance.destroy();
+      graficaSemanaContenedorInstance = new Chart(document.getElementById("graficaSemanaContenedor"), {
+        type: "bar",
+        data: {
+          labels: dias,
+          datasets: [{ label: "Llenados por Contenedor", data: valores, backgroundColor: "purple" }]
+        }
+      });
+    }
+
+    async function cargarGraficaUbicacion() {
+      const fecha = document.getElementById("fechaUbicacion").value;
+      if (!fecha) return;
+      const inicio = new Date(fecha);
+      const fin = new Date(inicio);
+      fin.setDate(fin.getDate() + 1);
+
+      const res = await fetch(`http://localhost:7168/api/estadisticasregistro/ubicaciones-por-fecha?inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`);
+      const datos = await res.json();
+
+      const ubicaciones = datos.map(d => d.ubicacion);
+      const valores = datos.map(d => d.total);
+
+      if (graficaUbicacionInstance) graficaUbicacionInstance.destroy();
+      graficaUbicacionInstance = new Chart(document.getElementById("graficaUbicacion"), {
+        type: "bar",
+        data: {
+          labels: ubicaciones,
+          datasets: [{ label: "Registros por Ubicación", data: valores, backgroundColor: "red" }]
+        }
+      });
+    }
+
+    window.onload = cargarContenedores;
+  </script>
+
     </body>
     </html>
+
+
+
+
+
+
+
+
+
+
+
