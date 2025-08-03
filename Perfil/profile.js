@@ -1,10 +1,10 @@
 // 1. Obtener el ID del administrador (puedes guardarlo en localStorage después del login)
-const adminId = "ID_DEL_ADMIN"; // Reemplaza esto con el ID real
+const adminId = "6875f6019877679620b5db24"; // Reemplaza esto con el ID real
 
 // 2. Función para cargar los datos del administrador
 async function loadAdminData() {
     try {
-        const response = await fetch(`/api/administrador/${adminId}`);
+        const response = await fetch(window.settings.apiUrl+`administrador/${adminId}`);
         if (!response.ok) throw new Error("Error al cargar datos");
         
         const admin = await response.json();
@@ -23,7 +23,7 @@ async function loadAdminData() {
 // 3. Función para actualizar los datos
 async function updateAdminData(updatedData) {
     try {
-        const response = await fetch(`/api/administrador`, {
+        const response = await fetch(window.settings.apiUrl+`administrador`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

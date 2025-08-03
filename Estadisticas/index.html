@@ -150,6 +150,7 @@
 
 
 
+<script src="/config/config.js"></script>
 
 <script>
   let graficaContenedorInstance = null;
@@ -164,7 +165,7 @@
 
   async function cargarContenedores() {
     try {
-      const res = await fetch("http://localhost:7168/api/contenedor");
+      const res = await fetch(window.settings.apiUrl+"Contenedor");
       const contenedores = await res.json();
       const selects = [
         document.getElementById("contenedorSelect"),
@@ -217,7 +218,7 @@
 
     try {
       const res = await fetch(
-        `http://localhost:7168/api/estadisticaslectura/promedio-por-hora?idContenedor=${id}&fechaInicio=${inicio.toISOString()}&fechaFin=${fin.toISOString()}`
+        window.settings.apiUrl+`estadisticaslectura/promedio-por-hora?idContenedor=${id}&fechaInicio=${inicio.toISOString()}&fechaFin=${fin.toISOString()}`
       );
       const datos = await res.json();
 
@@ -270,7 +271,7 @@
 
     try {
       const res = await fetch(
-        `http://localhost:7168/api/estadisticaslectura/promedio-general-por-hora?fechaInicio=${inicio.toISOString()}&fechaFin=${fin.toISOString()}`
+        window.settings.apiUrl+`estadisticaslectura/promedio-general-por-hora?fechaInicio=${inicio.toISOString()}&fechaFin=${fin.toISOString()}`
       );
       const datos = await res.json();
 
@@ -321,7 +322,7 @@
 
     try {
       const res = await fetch(
-        `http://localhost:7168/api/estadisticasregistro/llenados-semana-general?inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`
+        window.settings.apiUrl+`estadisticasregistro/llenados-semana-general?inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`
       );
       const datos = await res.json();
 
@@ -374,7 +375,7 @@
 
     try {
       const res = await fetch(
-        `http://localhost:7168/api/estadisticasregistro/llenados-semana-contenedor?idContenedor=${id}&inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`
+        window.settings.apiUrl+`estadisticasregistro/llenados-semana-contenedor?idContenedor=${id}&inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`
       );
       const datos = await res.json();
 
@@ -426,7 +427,7 @@
 
     try {
       const res = await fetch(
-        `http://localhost:7168/api/estadisticasregistro/ubicaciones-por-fecha?inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`
+        window.settings.apiUrl+`estadisticasregistro/ubicaciones-por-fecha?inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`
       );
       const datos = await res.json();
 

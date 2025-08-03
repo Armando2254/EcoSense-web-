@@ -88,9 +88,10 @@
     <button class="enviar-btn" onclick="submitFormulario()">Enviar</button>
   </div>
 </div>
+<script src="/config/config.js"></script>
 
 <script>
-const apiUrl = "http://localhost:5033/api/contenedor";
+const apiUrl = window.settings.apiUrl+"Contenedor";
 let modoActual = "";
 
 async function obtenerContenedores() {
