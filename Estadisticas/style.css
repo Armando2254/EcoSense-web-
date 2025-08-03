@@ -95,7 +95,7 @@ body {
 
 /* =========================== SECCIÓN PRINCIPAL =========================== */
 .main {
-  background-color: #f6f6f6;
+  background-color: #adcfa6;
 }
 
 /* =========================== FOOTER =========================== */
@@ -158,6 +158,9 @@ body {
 
 
 .charts-grid {
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-top: 1.2%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
