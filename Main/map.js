@@ -6,7 +6,7 @@ function iniciarMap() {
     center: centroInicial
   });
 
-  fetch('https://localhost:7168/api/Contenedor')
+  fetch('http://localhost:7168/api/Contenedor')
     .then(response => {
       if (!response.ok) {
         throw new Error("Error al obtener los datos de los contenedores");
@@ -59,7 +59,7 @@ function iniciarMap() {
   document.getElementById('btnVaciar').addEventListener('click', () => {
     const id = document.getElementById('btnVaciar').dataset.id;
     // Aquí llamas a la API para vaciar el contenedor
-    fetch(`https://localhost:7168/api/Contenedor/${id}`, {
+    fetch(`http://localhost:7168/api/Contenedor/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

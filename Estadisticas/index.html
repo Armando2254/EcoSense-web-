@@ -152,149 +152,325 @@
 
 
 <script>
-    let graficaContenedorInstance = null;
-    let graficaGeneralInstance = null;
-    let graficaSemanaInstance = null;
-    let graficaSemanaContenedorInstance = null;
-    let graficaUbicacionInstance = null;
+  let graficaContenedorInstance = null;
+  let graficaGeneralInstance = null;
+  let graficaSemanaInstance = null;
+  let graficaSemanaContenedorInstance = null;
+  let graficaUbicacionInstance = null;
 
-    async function cargarContenedores() {
+  function formatDateInput(d) {
+    return d.toISOString().slice(0, 10);
+  }
+
+  async function cargarContenedores() {
+    try {
       const res = await fetch("http://localhost:7168/api/contenedor");
       const contenedores = await res.json();
-      const selects = [document.getElementById("contenedorSelect"), document.getElementById("contenedorSemanaSelect")];
+      const selects = [
+        document.getElementById("contenedorSelect"),
+        document.getElementById("contenedorSemanaSelect"),
+      ];
       for (const select of selects) {
         select.innerHTML = "";
-        contenedores.forEach(c => {
+        contenedores.forEach((c) => {
           const option = document.createElement("option");
           option.value = c.id;
           option.textContent = c.nombre || c.id;
           select.appendChild(option);
         });
       }
+
+      // Set default dates
+      const today = new Date();
+      const isoToday = formatDateInput(today);
+      document.getElementById("fechaContenedor").value = isoToday;
+      document.getElementById("fechaGeneral").value = isoToday;
+      document.getElementById("fechaUbicacion").value = isoToday;
+
+      const semanaInicio = new Date();
+      semanaInicio.setDate(today.getDate() - 7); // semana que termina hoy
+      const isoSemanaInicio = formatDateInput(semanaInicio);
+      document.getElementById("fechaSemana").value = isoSemanaInicio;
+      document.getElementById("fechaSemanaContenedor").value = isoSemanaInicio;
+
+      // Cargar gráficas iniciales con los valores por defecto
+      await Promise.all([
+        cargarGraficaContenedor(),
+        cargarGraficaGeneral(),
+        cargarGraficaSemana(),
+        cargarGraficaSemanaContenedor(),
+        cargarGraficaUbicacion(),
+      ]);
+    } catch (e) {
+      console.error("Error al cargar contenedores o gráficas iniciales:", e);
     }
+  }
 
-    async function cargarGraficaContenedor() {
-      const id = document.getElementById("contenedorSelect").value;
-      const fecha = document.getElementById("fechaContenedor").value;
-      if (!id || !fecha) return;
+  async function cargarGraficaContenedor() {
+    const id = document.getElementById("contenedorSelect").value;
+    const fecha = document.getElementById("fechaContenedor").value;
+    if (!id || !fecha) return;
 
-      const inicio = new Date(fecha);
-      const fin = new Date(inicio);
-      fin.setDate(fin.getDate() + 1);
+    const inicio = new Date(fecha);
+    const fin = new Date(inicio);
+    fin.setDate(fin.getDate() + 1);
 
-      const res = await fetch(`http://localhost:7168/api/estadisticaslectura/promedio-por-hora?idContenedor=${id}&fechaInicio=${inicio.toISOString()}&fechaFin=${fin.toISOString()}`);
+    try {
+      const res = await fetch(
+        `http://localhost:7168/api/estadisticaslectura/promedio-por-hora?idContenedor=${id}&fechaInicio=${inicio.toISOString()}&fechaFin=${fin.toISOString()}`
+      );
       const datos = await res.json();
 
-      const horas = datos.map(d => d.hora);
-      const valores = datos.map(d => d.promedioPorcentaje);
+      const horas = datos.map((d) => d.hora);
+      const valores = datos.map((d) => d.promedioPorcentaje);
 
       if (graficaContenedorInstance) graficaContenedorInstance.destroy();
-      graficaContenedorInstance = new Chart(document.getElementById("graficaContenedor"), {
-        type: "line",
-        data: {
-          labels: horas,
-          datasets: [{ label: "Promedio %", data: valores, borderColor: "blue", fill: false }]
+      graficaContenedorInstance = new Chart(
+        document.getElementById("graficaContenedor"),
+        {
+          type: "line",
+          data: {
+            labels: horas,
+            datasets: [
+              {
+                label: "Promedio %",
+                data: valores,
+                borderColor: "#4a6fa5",
+                backgroundColor: "rgba(74, 111, 165, 0.1)",
+                fill: true,
+                tension: 0.3,
+                pointRadius: 3,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: { mode: "index", intersect: false },
+            },
+            scales: {
+              x: { title: { display: true, text: "Hora" } },
+              y: { title: { display: true, text: "Promedio %" }, beginAtZero: true },
+            },
+          },
         }
-      });
+      );
+    } catch (e) {
+      console.error("Error en gráfica contenedor:", e);
     }
+  }
 
-    async function cargarGraficaGeneral() {
-      const fecha = document.getElementById("fechaGeneral").value;
-      if (!fecha) return;
-      const inicio = new Date(fecha);
-      const fin = new Date(inicio);
-      fin.setDate(fin.getDate() + 1);
+  async function cargarGraficaGeneral() {
+    const fecha = document.getElementById("fechaGeneral").value;
+    if (!fecha) return;
+    const inicio = new Date(fecha);
+    const fin = new Date(inicio);
+    fin.setDate(fin.getDate() + 1);
 
-      const res = await fetch(`http://localhost:7168/api/estadisticaslectura/promedio-general-por-hora?fechaInicio=${inicio.toISOString()}&fechaFin=${fin.toISOString()}`);
+    try {
+      const res = await fetch(
+        `http://localhost:7168/api/estadisticaslectura/promedio-general-por-hora?fechaInicio=${inicio.toISOString()}&fechaFin=${fin.toISOString()}`
+      );
       const datos = await res.json();
 
-      const horas = datos.map(d => d.numeroDeHora);
-      const valores = datos.map(d => d.promedioPorcentaje);
+      const horas = datos.map((d) => d.numeroDeHora);
+      const valores = datos.map((d) => d.promedioPorcentaje);
 
       if (graficaGeneralInstance) graficaGeneralInstance.destroy();
-      graficaGeneralInstance = new Chart(document.getElementById("graficaGeneral"), {
-        type: "bar",
-        data: {
-          labels: horas,
-          datasets: [{ label: "Promedio General %", data: valores, backgroundColor: "green" }]
+      graficaGeneralInstance = new Chart(
+        document.getElementById("graficaGeneral"),
+        {
+          type: "bar",
+          data: {
+            labels: horas,
+            datasets: [
+              {
+                label: "Promedio General %",
+                data: valores,
+                backgroundColor: "rgba(74, 111, 165, 0.6)",
+                borderRadius: 4,
+                barPercentage: 0.7,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: { mode: "index", intersect: false },
+            },
+            scales: {
+              x: { title: { display: true, text: "Hora" } },
+              y: { title: { display: true, text: "Promedio %" }, beginAtZero: true },
+            },
+          },
         }
-      });
+      );
+    } catch (e) {
+      console.error("Error en gráfica general:", e);
     }
+  }
 
-    async function cargarGraficaSemana() {
-      const fecha = document.getElementById("fechaSemana").value;
-      if (!fecha) return;
-      const inicio = new Date(fecha);
-      const fin = new Date(inicio);
-      fin.setDate(fin.getDate() + 7);
+  async function cargarGraficaSemana() {
+    const fecha = document.getElementById("fechaSemana").value;
+    if (!fecha) return;
+    const inicio = new Date(fecha);
+    const fin = new Date(inicio);
+    fin.setDate(fin.getDate() + 7);
 
-      const res = await fetch(`http://localhost:7168/api/estadisticasregistro/llenados-semana-general?inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`);
+    try {
+      const res = await fetch(
+        `http://localhost:7168/api/estadisticasregistro/llenados-semana-general?inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`
+      );
       const datos = await res.json();
 
-      const dias = datos.map(d => d.dia);
-      const valores = datos.map(d => d.totalLlenados);
+      const dias = datos.map((d) => d.dia);
+      const valores = datos.map((d) => d.totalLlenados);
 
       if (graficaSemanaInstance) graficaSemanaInstance.destroy();
-      graficaSemanaInstance = new Chart(document.getElementById("graficaSemana"), {
-        type: "bar",
-        data: {
-          labels: dias,
-          datasets: [{ label: "Total Llenados", data: valores, backgroundColor: "orange" }]
+      graficaSemanaInstance = new Chart(
+        document.getElementById("graficaSemana"),
+        {
+          type: "bar",
+          data: {
+            labels: dias,
+            datasets: [
+              {
+                label: "Total Llenados",
+                data: valores,
+                backgroundColor: "rgba(100, 100, 100, 0.6)",
+                borderRadius: 4,
+                barPercentage: 0.7,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: { mode: "index", intersect: false },
+            },
+            scales: {
+              x: { title: { display: true, text: "Día" } },
+              y: { title: { display: true, text: "Llenados" }, beginAtZero: true },
+            },
+          },
         }
-      });
+      );
+    } catch (e) {
+      console.error("Error en gráfica semana general:", e);
     }
+  }
 
-    async function cargarGraficaSemanaContenedor() {
-      const id = document.getElementById("contenedorSemanaSelect").value;
-      const fecha = document.getElementById("fechaSemanaContenedor").value;
-      if (!id || !fecha) return;
+  async function cargarGraficaSemanaContenedor() {
+    const id = document.getElementById("contenedorSemanaSelect").value;
+    const fecha = document.getElementById("fechaSemanaContenedor").value;
+    if (!id || !fecha) return;
 
-      const inicio = new Date(fecha);
-      const fin = new Date(inicio);
-      fin.setDate(fin.getDate() + 7);
+    const inicio = new Date(fecha);
+    const fin = new Date(inicio);
+    fin.setDate(fin.getDate() + 7);
 
-      const res = await fetch(`http://localhost:7168/api/estadisticasregistro/llenados-semana-contenedor?idContenedor=${id}&inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`);
+    try {
+      const res = await fetch(
+        `http://localhost:7168/api/estadisticasregistro/llenados-semana-contenedor?idContenedor=${id}&inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`
+      );
       const datos = await res.json();
-      console.log("ID del contenedor semana:", id);
 
-      const dias = datos.map(d => d.dia);
-      const valores = datos.map(d => d.totalLlenados);
+      const dias = datos.map((d) => d.dia);
+      const valores = datos.map((d) => d.totalLlenados);
 
-      if (graficaSemanaContenedorInstance) graficaSemanaContenedorInstance.destroy();
-      graficaSemanaContenedorInstance = new Chart(document.getElementById("graficaSemanaContenedor"), {
-        type: "bar",
-        data: {
-          labels: dias,
-          datasets: [{ label: "Llenados por Contenedor", data: valores, backgroundColor: "purple" }]
+      if (graficaSemanaContenedorInstance)
+        graficaSemanaContenedorInstance.destroy();
+      graficaSemanaContenedorInstance = new Chart(
+        document.getElementById("graficaSemanaContenedor"),
+        {
+          type: "bar",
+          data: {
+            labels: dias,
+            datasets: [
+              {
+                label: "Llenados por Contenedor",
+                data: valores,
+                backgroundColor: "rgba(74, 111, 165, 0.4)",
+                borderRadius: 4,
+                barPercentage: 0.7,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: { mode: "index", intersect: false },
+            },
+            scales: {
+              x: { title: { display: true, text: "Día" } },
+              y: { title: { display: true, text: "Llenados" }, beginAtZero: true },
+            },
+          },
         }
-      });
+      );
+    } catch (e) {
+      console.error("Error en gráfica semana contenedor:", e);
     }
+  }
 
-    async function cargarGraficaUbicacion() {
-      const fecha = document.getElementById("fechaUbicacion").value;
-      if (!fecha) return;
-      const inicio = new Date(fecha);
-      const fin = new Date(inicio);
-      fin.setDate(fin.getDate() + 1);
+  async function cargarGraficaUbicacion() {
+    const fecha = document.getElementById("fechaUbicacion").value;
+    if (!fecha) return;
+    const inicio = new Date(fecha);
+    const fin = new Date(inicio);
+    fin.setDate(fin.getDate() + 1);
 
-      const res = await fetch(`http://localhost:7168/api/estadisticasregistro/ubicaciones-por-fecha?inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`);
+    try {
+      const res = await fetch(
+        `http://localhost:7168/api/estadisticasregistro/ubicaciones-por-fecha?inicio=${inicio.toISOString()}&fin=${fin.toISOString()}`
+      );
       const datos = await res.json();
 
-      const ubicaciones = datos.map(d => d.ubicacion);
-      const valores = datos.map(d => d.total);
+      const ubicaciones = datos.map((d) => d.ubicacion);
+      const valores = datos.map((d) => d.total);
 
       if (graficaUbicacionInstance) graficaUbicacionInstance.destroy();
-      graficaUbicacionInstance = new Chart(document.getElementById("graficaUbicacion"), {
-        type: "bar",
-        data: {
-          labels: ubicaciones,
-          datasets: [{ label: "Registros por Ubicación", data: valores, backgroundColor: "red" }]
+      graficaUbicacionInstance = new Chart(
+        document.getElementById("graficaUbicacion"),
+        {
+          type: "bar",
+          data: {
+            labels: ubicaciones,
+            datasets: [
+              {
+                label: "Registros por Ubicación",
+                data: valores,
+                backgroundColor: "rgba(100, 100, 100, 0.4)",
+                borderRadius: 4,
+                barPercentage: 0.7,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: { mode: "index", intersect: false },
+            },
+            scales: {
+              x: { title: { display: true, text: "Ubicación" } },
+              y: { title: { display: true, text: "Registros" }, beginAtZero: true },
+            },
+          },
         }
-      });
+      );
+    } catch (e) {
+      console.error("Error en gráfica de ubicación:", e);
     }
+  }
 
-    window.onload = cargarContenedores;
-  </script>
+  window.onload = cargarContenedores;
+</script>
+
 
     </body>
     </html>
