@@ -98,7 +98,7 @@
 
 <script>
 // Simulamos la configuración ya que no tenemos acceso al archivo config.js
-const apiUrl = "http://localhost:3000/api/Contenedor"; // Ajusta esta URL según tu configuración
+const apiUrl = "http://localhost:7168/api/Contenedor"; // Ajusta esta URL según tu configuración
 let modoActual = "";
 let contenedoresGlobales = []; // Para almacenar todos los contenedores
 
@@ -121,10 +121,10 @@ async function obtenerContenedores() {
       // Corregimos los nombres de las propiedades según lo que devuelve la API
       const id = c._id || c.id || 'N/A';
       const nombre = c.nombre || c.name || 'Sin nombre';
-      const porcentaje = c.porcentaje || c.percentage || c.llenado || 0;
-      const ubicacion = c.ubicacion || c.location || c.direccion || 'Sin ubicación';
-      const lat = c.latitud || c.lat || c.latitude || 'N/A';
-      const lng = c.longitud || c.lng || c.longitude || 'N/A';
+      const porcentaje = c.porcentajeActual || c.percentage || c.llenado || 0;
+      const ubicacion = c.ubicacion.nombre || c.location || c.direccion || 'Sin ubicación';
+      const lat = c.ubicacion.latitud || c.lat || c.latitude || 'N/A';
+      const lng = c.ubicacion.longitud || c.lng || c.longitude || 'N/A';
       
       contenedor.innerHTML += `
         <div style="border:1px solid #ddd; padding:15px; margin-bottom:15px; background:white; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1)">
@@ -159,10 +159,10 @@ async function buscarContenedor() {
     // Corregimos los nombres de las propiedades
     const idContenedor = c._id || c.id || 'N/A';
     const nombre = c.nombre || c.name || 'Sin nombre';
-    const porcentaje = c.porcentaje || c.percentage || c.llenado || 0;
-    const ubicacion = c.ubicacion || c.location || c.direccion || 'Sin ubicación';
-    const lat = c.latitud || c.lat || c.latitude || 'N/A';
-    const lng = c.longitud || c.lng || c.longitude || 'N/A';
+    const porcentaje = c.porcentajeActual || c.percentage || c.llenado || 0;
+    const ubicacion = c.ubicacion.nombre || c.location || c.direccion || 'Sin ubicación';
+    const lat = c.ubicacion.latitud || c.lat || c.latitude || 'N/A';
+    const lng = c.ubicacion.longitud || c.lng || c.longitude || 'N/A';
     
     contenedor.innerHTML = `
       <h2 style='margin-bottom: 20px;'>Resultado de búsqueda</h2>
@@ -201,10 +201,10 @@ async function cargarDatosContenedor(contenedorId) {
     // Llenar los campos con los datos del contenedor seleccionado
     document.getElementById("formId").value = c._id || c.id || '';
     document.getElementById("formNombre").value = c.nombre || c.name || '';
-    document.getElementById("formPorcentaje").value = c.porcentaje || c.percentage || c.llenado || 0;
-    document.getElementById("formUbicacion").value = c.ubicacion || c.location || c.direccion || '';
-    document.getElementById("formLatitud").value = c.latitud || c.lat || c.latitude || '';
-    document.getElementById("formLongitud").value = c.longitud || c.lng || c.longitude || '';
+    document.getElementById("formPorcentaje").value = c.porcentajeActual || c.percentage || c.llenado || 0;
+    document.getElementById("formUbicacion").value = c.ubicacion.nombre || c.location || c.direccion || '';
+    document.getElementById("formLatitud").value = c.ubicacion.latitud || c.lat || c.latitude || '';
+    document.getElementById("formLongitud").value = c.ubicacion.longitud || c.lng || c.longitude || '';
   } catch (error) {
     console.error("Error:", error);
     alert("Error al cargar los datos del contenedor");
