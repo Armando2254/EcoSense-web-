@@ -7,7 +7,350 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* =========================== FUENTES PERSONALIZADAS =========================== */
+    @font-face {
+      font-family: 'Work-Sans';
+      src: url('../assets/fonts/WorkSans-Regular.ttf') format('truetype');
+    }
+    
+    @font-face {
+      font-family: 'Work-Sans-Black';
+      src: url('../assets/fonts/Work-Sans-Black.ttf') format('truetype');
+    }
+    
+    @font-face {
+      font-family: 'Work-Sans-Medium';
+      src: url('../assets/fonts/WorkSans-Medium.ttf') format('truetype');
+    }
+    
+    @font-face {
+      font-family: 'Work-Sans-Bold';
+      src: url('../assets/fonts/WorkSans-Bold.ttf') format('truetype');
+    }
+    
+    @font-face {
+      font-family: 'Work-Sans-SemiBold';
+      src: url('../assets/fonts/WorkSans-SemiBold.ttf') format('truetype');
+    }
+    
+    /* =========================== RESET GENERAL =========================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Work-Sans', sans-serif;
+      background-color: #f6f6f6;
+      color: #000000;
+    }
+    
+    /* =========================== ESTRUCTURA PRINCIPAL =========================== */
+    .container {
+      display: grid;
+      min-height: 100vh;
+      grid-template-rows: auto 1fr auto;
+    }
+    
+    /* =========================== NAVBAR =========================== */
+    .navbar {
+      display: flex;
+      width: 100%;
+      height: 100px;
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .eco {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      width: 30%;
+      font-size: 30px;
+      padding-left: 60px;
+      font-family: 'Work-Sans-Bold';
+      color: #333;
+    }
+    
+    .picture-user {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #adcfa6;
+    }
+    
+    .opciones {
+      display: flex;
+      justify-content: end;
+      align-items: center;
+      width: 75%;
+      height: 100%;
+      gap: 15px;
+      padding-right: 55px;
+    }
+    
+    .opciones a:hover {
+      color: #ffffff;
+      background-color: #adcfa6;
+      transition: all 0.3s ease;
+    }
+    
+    .opcion {
+      font-size: 20px;
+      list-style: none;
+      font-family: 'Roboto', sans-serif;
+    }
+    
+    .navbar a, .opciones a {
+      text-decoration: none;
+      color: black;
+      border-radius: 12px;
+      padding: 12px 24px;
+      transition: all 0.3s ease;
+    }
+    
+    /* =========================== SECCIÓN PRINCIPAL =========================== */
+    .main {
+      background-color: #adcfa6;
+      min-height: calc(100vh - 200px);
+    }
+    
+    /* =========================== RECOLECTORES =========================== */
+    .recolectores-section {
+      padding: 20px 40px;
+      background-color: #f6f6f6;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      font-family: 'Work-Sans', sans-serif;
+      min-height: auto;
+      height: auto;
+      justify-content: flex-start;
+    }
+    
+    .recolector-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .recolector-actions input[type="text"] {
+      padding: 12px 16px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .recolector-actions button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .recolector-actions button:nth-child(2) {
+      background-color: #1d7cf0;
+      color: white;
+    }
+    
+    .recolector-actions button:nth-child(3) {
+      background-color: #28a745;
+      color: white;
+    }
+    
+    .recolector-actions button:nth-child(4) {
+      background-color: #ffc107;
+      color: black;
+    }
+    
+    .recolector-actions button:nth-child(5) {
+      background-color: #dc3545;
+      color: white;
+    }
+    
+    .recolector-actions button:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    
+    #recolectoresLista {
+      padding: 20px 40px;
+    }
+    
+    #recolectoresLista > div {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.06);
+      transition: transform 0.3s ease;
+    }
+    
+    #recolectoresLista > div:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    #recolectoresLista p {
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #333;
+    }
+    
+    /* =========================== FOOTER =========================== */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 40px 60px;
+      background-color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      gap: 60px;
+      flex-wrap: wrap;
+      border-top: 1px solid #eee;
+    }
+    
+    .footer-left {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    .footer-right {
+      flex: 2;
+      min-width: 300px;
+    }
+    
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    
+    .column h4 {
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .column p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .social-icons a {
+      margin-top: 25px;
+      text-decoration: none;
+      margin-right: 55px;
+      color: #333;
+      font-size: 50px;
+      transition: color 0.3s ease;
+    }
+    
+    .social-icons a:hover {
+      color: #adcfa6;
+    }
+    
+    /* =========================== MODAL FORMULARIO =========================== */
+    #formularioRecolector {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    #formularioRecolector.mostrar {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .form-modal {
+      background-color: white;
+      width: 90%;
+      max-width: 500px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    
+    .btn-cerrar {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
+    
+    .btn-cerrar:hover {
+      color: #ff0000;
+    }
+    
+    #formularioRecolector h3 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+      font-family: 'Work-Sans-Bold';
+    }
+    
+    #formularioRecolector input, #formularioRecolector select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: 'Work-Sans';
+    }
+    
+    .enviar-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+    
+    .enviar-btn:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
 <body>
 <div class="container">
@@ -27,15 +370,15 @@
     <section class="recolectores-section">
       <div class="recolector-actions">
         <input type="text" id="buscarId" placeholder="Buscar por ID...">
-        <button onclick="buscarRecolector()">Buscar</button>
-        <button onclick="mostrarFormulario('agregar')">Agregar</button>
-        <button onclick="mostrarFormulario('modificar')">Modificar</button>
-        <button onclick="mostrarFormulario('eliminar')">Eliminar</button>
+        <button onclick="buscarRecolector()"><i class="fas fa-search"></i> Buscar</button>
+        <button onclick="mostrarFormulario('agregar')"><i class="fas fa-plus"></i> Agregar</button>
+        <button onclick="mostrarFormulario('modificar')"><i class="fas fa-edit"></i> Modificar</button>
+        <button onclick="mostrarFormulario('eliminar')"><i class="fas fa-trash-alt"></i> Eliminar</button>
       </div>
     </section>
 
     <!-- Lista de recolectores -->
-    <div id="recolectoresLista" style="padding: 20px 40px;"></div>
+    <div id="recolectoresLista"></div>
   </main>
 
   <footer class="footer">
@@ -77,24 +420,44 @@
   <div class="form-modal">
     <button class="btn-cerrar" onclick="cerrarFormulario()">&times;</button>
     <h3 id="formTitulo">Agregar Recolector</h3>
-    <input type="text" id="formId" placeholder="ID">
-    <input type="text" id="formNombre" placeholder="Nombre">
+    
+    <!-- Select para modificar/eliminar -->
+    <select id="formSelectRecolector" style="display:none;">
+      <option value="">Seleccionar recolector...</option>
+    </select>
+    
+    <!-- Campos del formulario -->
+    <input type="text" id="formId" placeholder="ID" style="display:none;">
+    <input type="text" id="formNombrePila" placeholder="Nombre">
+    <input type="text" id="formPrimerApell" placeholder="Primer Apellido">
+    <input type="text" id="formSegundoApell" placeholder="Segundo Apellido">
     <input type="email" id="formEmail" placeholder="Correo">
     <input type="password" id="formContrasena" placeholder="Contraseña">
     <button class="enviar-btn" onclick="submitFormulario()">Enviar</button>
   </div>
 </div>
-<script src="/config/config.js"></script>
 
 <script>
-const apiUrl = window.settings.apiUrl+"recolector";
+// Simulamos la configuración ya que no tenemos acceso al archivo config.js
+const apiUrl = "http://localhost:3000/api/recolector"; // Ajusta esta URL según tu configuración
 let modoActual = "";
+let recolectoresGlobales = []; // Para almacenar todos los recolectores
+
+// Función para construir el nombre completo
+function construirNombreCompleto(recolector) {
+  const nombre = recolector.nombrePila || recolector.nombre || '';
+  const primerApell = recolector.primerApell || recolector.primerApellido || '';
+  const segundoApell = recolector.segundoApell || recolector.segundoApellido || '';
+  
+  return `${nombre} ${primerApell} ${segundoApell}`.trim();
+}
 
 async function obtenerRecolectores() {
   try {
     const res = await fetch(apiUrl);
     if (!res.ok) throw new Error("Error al obtener recolectores");
     const recolectores = await res.json();
+    recolectoresGlobales = recolectores; // Guardamos para usar en los selects
     
     const contenedor = document.getElementById("recolectoresLista");
     contenedor.innerHTML = "<h2 style='margin-bottom: 20px;'>Recolectores</h2>";
@@ -105,11 +468,16 @@ async function obtenerRecolectores() {
     }
     
     recolectores.forEach(r => {
+      // Corregimos los nombres de las propiedades según lo que devuelve la API
+      const id = r._id || r.id || 'N/A';
+      const nombreCompleto = construirNombreCompleto(r);
+      const email = r.email || r.correo || 'Sin email';
+      
       contenedor.innerHTML += `
         <div style="border:1px solid #ddd; padding:15px; margin-bottom:15px; background:white; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1)">
-          <p><strong>ID:</strong> ${r.id}</p>
-          <p><strong>Nombre:</strong> ${r.nombre}</p>
-          <p><strong>Email:</strong> ${r.email}</p>
+          <p><strong>ID:</strong> ${id}</p>
+          <p><strong>Nombre:</strong> ${nombreCompleto || 'Sin nombre'}</p>
+          <p><strong>Email:</strong> ${email}</p>
         </div>
       `;
     });
@@ -132,12 +500,18 @@ async function buscarRecolector() {
     
     const r = await res.json();
     const contenedor = document.getElementById("recolectoresLista");
+    
+    // Corregimos los nombres de las propiedades
+    const idRecolector = r._id || r.id || 'N/A';
+    const nombreCompleto = construirNombreCompleto(r);
+    const email = r.email || r.correo || 'Sin email';
+    
     contenedor.innerHTML = `
       <h2 style='margin-bottom: 20px;'>Resultado de búsqueda</h2>
       <div style="border:1px solid #ddd; padding:15px; background:white; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1)">
-        <p><strong>ID:</strong> ${r.id}</p>
-        <p><strong>Nombre:</strong> ${r.nombre}</p>
-        <p><strong>Email:</strong> ${r.email}</p>
+        <p><strong>ID:</strong> ${idRecolector}</p>
+        <p><strong>Nombre:</strong> ${nombreCompleto || 'Sin nombre'}</p>
+        <p><strong>Email:</strong> ${email}</p>
       </div>
     `;
   } catch (error) {
@@ -146,30 +520,99 @@ async function buscarRecolector() {
   }
 }
 
+function cargarSelectRecolectores() {
+  const select = document.getElementById("formSelectRecolector");
+  select.innerHTML = '<option value="">Seleccionar recolector...</option>';
+  
+  recolectoresGlobales.forEach(r => {
+    const id = r._id || r.id;
+    const nombreCompleto = construirNombreCompleto(r);
+    select.innerHTML += `<option value="${id}">${nombreCompleto || 'Sin nombre'}</option>`;
+  });
+}
+
+async function cargarDatosRecolector(recolectorId) {
+  try {
+    const res = await fetch(`${apiUrl}/${recolectorId}`);
+    if (!res.ok) throw new Error("Error al obtener datos del recolector");
+    
+    const r = await res.json();
+    
+    // Llenar los campos con los datos del recolector seleccionado
+    document.getElementById("formId").value = r._id || r.id || '';
+    document.getElementById("formNombrePila").value = r.nombrePila || r.nombre || '';
+    document.getElementById("formPrimerApell").value = r.primerApell || r.primerApellido || '';
+    document.getElementById("formSegundoApell").value = r.segundoApell || r.segundoApellido || '';
+    document.getElementById("formEmail").value = r.email || r.correo || '';
+    document.getElementById("formContrasena").value = ''; // No mostrar contraseña por seguridad
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al cargar los datos del recolector");
+  }
+}
+
 function mostrarFormulario(modo) {
   modoActual = modo;
   const modal = document.getElementById("formularioRecolector");
   const titulo = document.getElementById("formTitulo");
+  const selectRecolector = document.getElementById("formSelectRecolector");
+  const formId = document.getElementById("formId");
+  const formNombrePila = document.getElementById("formNombrePila");
+  const formPrimerApell = document.getElementById("formPrimerApell");
+  const formSegundoApell = document.getElementById("formSegundoApell");
+  const formEmail = document.getElementById("formEmail");
+  const formContrasena = document.getElementById("formContrasena");
   
   // Configurar el título según el modo
   titulo.textContent = `${modo.charAt(0).toUpperCase() + modo.slice(1)} Recolector`;
   
-  // Mostrar u ocultar campos según el modo
-  if (modo === "eliminar") {
-    document.getElementById("formNombre").style.display = "none";
-    document.getElementById("formEmail").style.display = "none";
-    document.getElementById("formContrasena").style.display = "none";
-  } else {
-    document.getElementById("formNombre").style.display = "block";
-    document.getElementById("formEmail").style.display = "block";
-    document.getElementById("formContrasena").style.display = "block";
-  }
-  
   // Limpiar formulario
-  document.getElementById("formId").value = "";
-  document.getElementById("formNombre").value = "";
-  document.getElementById("formEmail").value = "";
-  document.getElementById("formContrasena").value = "";
+  formId.value = "";
+  formNombrePila.value = "";
+  formPrimerApell.value = "";
+  formSegundoApell.value = "";
+  formEmail.value = "";
+  formContrasena.value = "";
+  
+  if (modo === "agregar") {
+    // Modo agregar: ocultar select y ID, mostrar todos los otros campos
+    selectRecolector.style.display = "none";
+    formId.style.display = "none"; // El ID lo genera MongoDB
+    formNombrePila.style.display = "block";
+    formPrimerApell.style.display = "block";
+    formSegundoApell.style.display = "block";
+    formEmail.style.display = "block";
+    formContrasena.style.display = "block";
+    
+  } else if (modo === "modificar") {
+    // Modo modificar: mostrar select, ocultar ID manual, mostrar otros campos
+    cargarSelectRecolectores();
+    selectRecolector.style.display = "block";
+    formId.style.display = "none"; // Se llenará automáticamente
+    formNombrePila.style.display = "block";
+    formPrimerApell.style.display = "block";
+    formSegundoApell.style.display = "block";
+    formEmail.style.display = "block";
+    formContrasena.style.display = "block";
+    
+    // Agregar evento para cargar datos cuando se seleccione un recolector
+    selectRecolector.onchange = function() {
+      if (this.value) {
+        cargarDatosRecolector(this.value);
+      }
+    };
+    
+  } else if (modo === "eliminar") {
+    // Modo eliminar: solo mostrar select
+    cargarSelectRecolectores();
+    selectRecolector.style.display = "block";
+    formId.style.display = "none";
+    formNombrePila.style.display = "none";
+    formPrimerApell.style.display = "none";
+    formSegundoApell.style.display = "none";
+    formEmail.style.display = "none";
+    formContrasena.style.display = "none";
+  }
   
   // Mostrar el modal
   modal.classList.add("mostrar");
@@ -178,59 +621,135 @@ function mostrarFormulario(modo) {
 function cerrarFormulario() {
   const modal = document.getElementById("formularioRecolector");
   modal.classList.remove("mostrar");
+  
+  // Limpiar el evento del select
+  document.getElementById("formSelectRecolector").onchange = null;
 }
 
 async function submitFormulario() {
-  const id = document.getElementById("formId").value.trim();
-  const nombre = document.getElementById("formNombre").value.trim();
+  if (modoActual === "agregar") {
+    await agregarRecolector();
+  } else if (modoActual === "modificar") {
+    await modificarRecolector();
+  } else if (modoActual === "eliminar") {
+    await eliminarRecolector();
+  }
+}
+
+async function agregarRecolector() {
+  const nombrePila = document.getElementById("formNombrePila").value.trim();
+  const primerApell = document.getElementById("formPrimerApell").value.trim();
+  const segundoApell = document.getElementById("formSegundoApell").value.trim();
   const email = document.getElementById("formEmail").value.trim();
   const contrasena = document.getElementById("formContrasena").value.trim();
 
-  // Validaciones básicas
-  if (modoActual !== "eliminar" && (!nombre || !email)) {
-    alert("Por favor complete todos los campos requeridos");
+  if (!nombrePila || !primerApell || !email || !contrasena) {
+    alert("Por favor complete todos los campos requeridos (nombre, primer apellido, email y contraseña)");
     return;
   }
 
-  if ((modoActual === "modificar" || modoActual === "eliminar") && !id) {
-    alert("Por favor ingrese un ID para modificar/eliminar");
-    return;
-  }
-
-  const recolector = { id, nombre, email, contrasena };
+  const recolector = { 
+    nombrePila, 
+    primerApell, 
+    segundoApell, 
+    email, 
+    contrasena 
+  };
   
   try {
-    let res;
-    switch (modoActual) {
-      case "agregar":
-        res = await fetch(apiUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(recolector)
-        });
-        break;
-      case "modificar":
-        res = await fetch(apiUrl, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(recolector)
-        });
-        break;
-      case "eliminar":
-        res = await fetch(`${apiUrl}/${id}`, {
-          method: "DELETE"
-        });
-        break;
-    }
+    const res = await fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(recolector)
+    });
 
     if (!res.ok) throw new Error("Error en la operación");
     
-    alert(`Recolector ${modoActual}do exitosamente`);
+    alert("Recolector agregado exitosamente");
     cerrarFormulario();
     obtenerRecolectores();
   } catch (error) {
     console.error("Error:", error);
-    alert(`Error al ${modoActual} el recolector`);
+    alert("Error al agregar el recolector");
+  }
+}
+
+async function modificarRecolector() {
+  const selectRecolector = document.getElementById("formSelectRecolector");
+  const recolectorId = selectRecolector.value;
+  
+  if (!recolectorId) {
+    alert("Por favor seleccione un recolector");
+    return;
+  }
+
+  const nombrePila = document.getElementById("formNombrePila").value.trim();
+  const primerApell = document.getElementById("formPrimerApell").value.trim();
+  const segundoApell = document.getElementById("formSegundoApell").value.trim();
+  const email = document.getElementById("formEmail").value.trim();
+  const contrasena = document.getElementById("formContrasena").value.trim();
+
+  if (!nombrePila || !primerApell || !email) {
+    alert("Por favor complete todos los campos requeridos (nombre, primer apellido y email)");
+    return;
+  }
+
+  const recolector = { 
+    nombrePila, 
+    primerApell, 
+    segundoApell, 
+    email 
+  };
+  
+  // Solo incluir contraseña si se proporcionó una nueva
+  if (contrasena) {
+    recolector.contrasena = contrasena;
+  }
+  
+  try {
+    const res = await fetch(`${apiUrl}/${recolectorId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(recolector)
+    });
+
+    if (!res.ok) throw new Error("Error en la operación");
+    
+    alert("Recolector modificado exitosamente");
+    cerrarFormulario();
+    obtenerRecolectores();
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al modificar el recolector");
+  }
+}
+
+async function eliminarRecolector() {
+  const selectRecolector = document.getElementById("formSelectRecolector");
+  const recolectorId = selectRecolector.value;
+  
+  if (!recolectorId) {
+    alert("Por favor seleccione un recolector");
+    return;
+  }
+
+  if (!confirm("¿Está seguro de que desea eliminar este recolector?")) {
+    return;
+  }
+  
+  try {
+    const res = await fetch(`${apiUrl}/${recolectorId}`, {
+      method: "DELETE"
+    });
+
+    if (!res.ok) throw new Error("Error en la operación");
+    
+    alert("Recolector eliminado exitosamente");
+    cerrarFormulario();
+    obtenerRecolectores();
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al eliminar el recolector");
   }
 }
 

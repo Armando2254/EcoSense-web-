@@ -7,7 +7,350 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* =========================== FUENTES PERSONALIZADAS =========================== */
+    @font-face {
+      font-family: 'Work-Sans';
+      src: url('../assets/fonts/WorkSans-Regular.ttf') format('truetype');
+    }
+    
+    @font-face {
+      font-family: 'Work-Sans-Black';
+      src: url('../assets/fonts/Work-Sans-Black.ttf') format('truetype');
+    }
+    
+    @font-face {
+      font-family: 'Work-Sans-Medium';
+      src: url('../assets/fonts/WorkSans-Medium.ttf') format('truetype');
+    }
+    
+    @font-face {
+      font-family: 'Work-Sans-Bold';
+      src: url('../assets/fonts/WorkSans-Bold.ttf') format('truetype');
+    }
+    
+    @font-face {
+      font-family: 'Work-Sans-SemiBold';
+      src: url('../assets/fonts/WorkSans-SemiBold.ttf') format('truetype');
+    }
+    
+    /* =========================== RESET GENERAL =========================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Work-Sans', sans-serif;
+      background-color: #f6f6f6;
+      color: #000000;
+    }
+    
+    /* =========================== ESTRUCTURA PRINCIPAL =========================== */
+    .container {
+      display: grid;
+      min-height: 100vh;
+      grid-template-rows: auto 1fr auto;
+    }
+    
+    /* =========================== NAVBAR =========================== */
+    .navbar {
+      display: flex;
+      width: 100%;
+      height: 100px;
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .eco {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      width: 30%;
+      font-size: 30px;
+      padding-left: 60px;
+      font-family: 'Work-Sans-Bold';
+      color: #333;
+    }
+    
+    .picture-user {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #adcfa6;
+    }
+    
+    .opciones {
+      display: flex;
+      justify-content: end;
+      align-items: center;
+      width: 75%;
+      height: 100%;
+      gap: 15px;
+      padding-right: 55px;
+    }
+    
+    .opciones a:hover {
+      color: #ffffff;
+      background-color: #adcfa6;
+      transition: all 0.3s ease;
+    }
+    
+    .opcion {
+      font-size: 20px;
+      list-style: none;
+      font-family: 'Roboto', sans-serif;
+    }
+    
+    .navbar a, .opciones a {
+      text-decoration: none;
+      color: black;
+      border-radius: 12px;
+      padding: 12px 24px;
+      transition: all 0.3s ease;
+    }
+
+    /* =========================== SECCIÓN PRINCIPAL =========================== */
+    .main {
+      background-color: #adcfa6;
+      min-height: calc(100vh - 200px);
+    }
+    
+    /* =========================== CONTENEDORES =========================== */
+    .contenedores-section {
+      padding: 20px 40px;
+      background-color: #f6f6f6;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      font-family: 'Work-Sans', sans-serif;
+      min-height: auto;
+      height: auto;
+      justify-content: flex-start;
+    }
+    
+    .contenedor-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .contenedor-actions input[type="text"] {
+      padding: 12px 16px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .contenedor-actions button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .contenedor-actions button:nth-child(2) {
+      background-color: #1d7cf0;
+      color: white;
+    }
+    
+    .contenedor-actions button:nth-child(3) {
+      background-color: #28a745;
+      color: white;
+    }
+    
+    .contenedor-actions button:nth-child(4) {
+      background-color: #ffc107;
+      color: black;
+    }
+    
+    .contenedor-actions button:nth-child(5) {
+      background-color: #dc3545;
+      color: white;
+    }
+    
+    .contenedor-actions button:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    
+    #contenedoresLista {
+      padding: 20px 40px;
+    }
+    
+    #contenedoresLista > div {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.06);
+      transition: transform 0.3s ease;
+    }
+    
+    #contenedoresLista > div:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    #contenedoresLista p {
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #333;
+    }
+    
+    /* =========================== FOOTER =========================== */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 40px 60px;
+      background-color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      gap: 60px;
+      flex-wrap: wrap;
+      border-top: 1px solid #eee;
+    }
+    
+    .footer-left {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    .footer-right {
+      flex: 2;
+      min-width: 300px;
+    }
+    
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    
+    .column h4 {
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .column p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .social-icons a {
+      margin-top: 25px;
+      text-decoration: none;
+      margin-right: 55px;
+      color: #333;
+      font-size: 50px;
+      transition: color 0.3s ease;
+    }
+    
+    .social-icons a:hover {
+      color: #adcfa6;
+    }
+    
+    /* =========================== MODAL FORMULARIO =========================== */
+    #formularioContenedor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    #formularioContenedor.mostrar {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .form-modal {
+      background-color: white;
+      width: 90%;
+      max-width: 500px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    
+    .btn-cerrar {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
+    
+    .btn-cerrar:hover {
+      color: #ff0000;
+    }
+    
+    #formularioContenedor h3 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+      font-family: 'Work-Sans-Bold';
+    }
+    
+    #formularioContenedor input, #formularioContenedor select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: 'Work-Sans';
+    }
+    
+    .enviar-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+    
+    .enviar-btn:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
 <body>
 <div class="container">
@@ -40,7 +383,7 @@
     <div id="contenedoresLista"></div>
   </main>
 
-  <!-- FOOTER CORREGIDO (IGUAL QUE RECOLECTORES) -->
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-left">
       <div class="social-icons">
@@ -79,26 +422,35 @@
   <div class="form-modal">
     <button class="btn-cerrar" onclick="cerrarFormulario()">&times;</button>
     <h3 id="formTitulo">Agregar Contenedor</h3>
-    <input type="text" id="formId" placeholder="ID (para modificar/eliminar)">
+    
+    <!-- Select para modificar/eliminar -->
+    <select id="formSelectContenedor" style="display:none;" aria-placeholder="Seleccionar contenedor...">
+      <option value="">Seleccionar contenedor...</option>
+    </select>
+    
+    <!-- Campos del formulario -->
+    <input type="text" id="formId" placeholder="ID" style="display:none;">
     <input type="text" id="formNombre" placeholder="Nombre">
-    <input type="number" id="formPorcentaje" placeholder="Porcentaje de llenado">
+    <input type="number" id="formPorcentaje" placeholder="Porcentaje de llenado" min="0" max="100">
     <input type="text" id="formUbicacion" placeholder="Ubicación">
     <input type="text" id="formLatitud" placeholder="Latitud">
     <input type="text" id="formLongitud" placeholder="Longitud">
     <button class="enviar-btn" onclick="submitFormulario()">Enviar</button>
   </div>
 </div>
-<script src="/config/config.js"></script>
 
 <script>
-const apiUrl = window.settings.apiUrl+"Contenedor";
+// Simulamos la configuración ya que no tenemos acceso al archivo config.js
+const apiUrl = "http://localhost:3000/api/Contenedor"; // Ajusta esta URL según tu configuración
 let modoActual = "";
+let contenedoresGlobales = []; // Para almacenar todos los contenedores
 
 async function obtenerContenedores() {
   try {
     const res = await fetch(apiUrl);
     if (!res.ok) throw new Error("Error al obtener contenedores");
     const contenedores = await res.json();
+    contenedoresGlobales = contenedores; // Guardamos para usar en los selects
     
     const contenedor = document.getElementById("contenedoresLista");
     contenedor.innerHTML = "<h2 style='margin-bottom: 20px;'>Contenedores</h2>";
@@ -109,13 +461,21 @@ async function obtenerContenedores() {
     }
     
     contenedores.forEach(c => {
+      // Corregimos los nombres de las propiedades según lo que devuelve la API
+      const id = c._id || c.id || 'N/A';
+      const nombre = c.nombre || c.name || 'Sin nombre';
+      const porcentaje = c.porcentaje || c.percentage || c.llenado || 0;
+      const ubicacion = c.ubicacion || c.location || c.direccion || 'Sin ubicación';
+      const lat = c.latitud || c.lat || c.latitude || 'N/A';
+      const lng = c.longitud || c.lng || c.longitude || 'N/A';
+      
       contenedor.innerHTML += `
         <div style="border:1px solid #ddd; padding:15px; margin-bottom:15px; background:white; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1)">
-          <p><strong>ID:</strong> ${c.id}</p>
-          <p><strong>Nombre:</strong> ${c.nombre}</p>
-          <p><strong>% Llenado:</strong> ${c.porcentaje}%</p>
-          <p><strong>Ubicación:</strong> ${c.ubicacion}</p>
-          <p><strong>Coordenadas:</strong> ${c.lat}, ${c.lng}</p>
+          <p><strong>ID:</strong> ${id}</p>
+          <p><strong>Nombre:</strong> ${nombre}</p>
+          <p><strong>% Llenado:</strong> ${porcentaje}%</p>
+          <p><strong>Ubicación:</strong> ${ubicacion}</p>
+          <p><strong>Coordenadas:</strong> ${lat}, ${lng}</p>
         </div>
       `;
     });
@@ -138,14 +498,23 @@ async function buscarContenedor() {
     
     const c = await res.json();
     const contenedor = document.getElementById("contenedoresLista");
+    
+    // Corregimos los nombres de las propiedades
+    const idContenedor = c._id || c.id || 'N/A';
+    const nombre = c.nombre || c.name || 'Sin nombre';
+    const porcentaje = c.porcentaje || c.percentage || c.llenado || 0;
+    const ubicacion = c.ubicacion || c.location || c.direccion || 'Sin ubicación';
+    const lat = c.latitud || c.lat || c.latitude || 'N/A';
+    const lng = c.longitud || c.lng || c.longitude || 'N/A';
+    
     contenedor.innerHTML = `
       <h2 style='margin-bottom: 20px;'>Resultado de búsqueda</h2>
       <div style="border:1px solid #ddd; padding:15px; background:white; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1)">
-        <p><strong>ID:</strong> ${c.id}</p>
-        <p><strong>Nombre:</strong> ${c.nombre}</p>
-        <p><strong>% Llenado:</strong> ${c.porcentaje}%</p>
-        <p><strong>Ubicación:</strong> ${c.ubicacion}</p>
-        <p><strong>Coordenadas:</strong> ${c.lat}, ${c.lng}</p>
+        <p><strong>ID:</strong> ${idContenedor}</p>
+        <p><strong>Nombre:</strong> ${nombre}</p>
+        <p><strong>% Llenado:</strong> ${porcentaje}%</p>
+        <p><strong>Ubicación:</strong> ${ubicacion}</p>
+        <p><strong>Coordenadas:</strong> ${lat}, ${lng}</p>
       </div>
     `;
   } catch (error) {
@@ -154,36 +523,100 @@ async function buscarContenedor() {
   }
 }
 
+function cargarSelectContenedores() {
+  const select = document.getElementById("formSelectContenedor");
+  select.innerHTML = '<option value="">Seleccionar contenedor...</option>';
+  
+  contenedoresGlobales.forEach(c => {
+    const id = c._id || c.id;
+    const nombre = c.nombre || c.name || 'Sin nombre';
+    select.innerHTML += `<option value="${id}">${nombre}</option>`;
+  });
+}
+
+async function cargarDatosContenedor(contenedorId) {
+  try {
+    const res = await fetch(`${apiUrl}/${contenedorId}`);
+    if (!res.ok) throw new Error("Error al obtener datos del contenedor");
+    
+    const c = await res.json();
+    
+    // Llenar los campos con los datos del contenedor seleccionado
+    document.getElementById("formId").value = c._id || c.id || '';
+    document.getElementById("formNombre").value = c.nombre || c.name || '';
+    document.getElementById("formPorcentaje").value = c.porcentaje || c.percentage || c.llenado || 0;
+    document.getElementById("formUbicacion").value = c.ubicacion || c.location || c.direccion || '';
+    document.getElementById("formLatitud").value = c.latitud || c.lat || c.latitude || '';
+    document.getElementById("formLongitud").value = c.longitud || c.lng || c.longitude || '';
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al cargar los datos del contenedor");
+  }
+}
+
 function mostrarFormulario(modo) {
   modoActual = modo;
   const modal = document.getElementById("formularioContenedor");
   const titulo = document.getElementById("formTitulo");
+  const selectContenedor = document.getElementById("formSelectContenedor");
+  const formId = document.getElementById("formId");
+  const formNombre = document.getElementById("formNombre");
+  const formPorcentaje = document.getElementById("formPorcentaje");
+  const formUbicacion = document.getElementById("formUbicacion");
+  const formLatitud = document.getElementById("formLatitud");
+  const formLongitud = document.getElementById("formLongitud");
   
   // Configurar el título según el modo
   titulo.textContent = `${modo.charAt(0).toUpperCase() + modo.slice(1)} Contenedor`;
   
-  // Mostrar u ocultar campos según el modo
-  if (modo === "eliminar") {
-    document.getElementById("formNombre").style.display = "none";
-    document.getElementById("formPorcentaje").style.display = "none";
-    document.getElementById("formUbicacion").style.display = "none";
-    document.getElementById("formLatitud").style.display = "none";
-    document.getElementById("formLongitud").style.display = "none";
-  } else {
-    document.getElementById("formNombre").style.display = "block";
-    document.getElementById("formPorcentaje").style.display = "block";
-    document.getElementById("formUbicacion").style.display = "block";
-    document.getElementById("formLatitud").style.display = "block";
-    document.getElementById("formLongitud").style.display = "block";
-  }
-  
   // Limpiar formulario
-  document.getElementById("formId").value = "";
-  document.getElementById("formNombre").value = "";
-  document.getElementById("formPorcentaje").value = "";
-  document.getElementById("formUbicacion").value = "";
-  document.getElementById("formLatitud").value = "";
-  document.getElementById("formLongitud").value = "";
+  formId.value = "";
+  formNombre.value = "";
+  formPorcentaje.value = "";
+  formUbicacion.value = "";
+  formLatitud.value = "";
+  formLongitud.value = "";
+  
+  if (modo === "agregar") {
+    // Modo agregar: ocultar select y ID, mostrar todos los otros campos
+    selectContenedor.style.display = "none";
+    formId.style.display = "none"; // El ID lo genera MongoDB
+    formNombre.style.display = "block";
+    formPorcentaje.style.display = "block";
+    formPorcentaje.value = "0"; // Valor por defecto
+    formUbicacion.style.display = "block";
+    formLatitud.style.display = "block";
+    formLongitud.style.display = "block";
+    
+  } else if (modo === "modificar") {
+    // Modo modificar: mostrar select, ocultar ID manual, mostrar otros campos
+    cargarSelectContenedores();
+    selectContenedor.style.display = "block";
+    formId.style.display = "none"; // Se llenará automáticamente
+    formNombre.style.display = "block";
+    formPorcentaje.style.display = "block";
+    formUbicacion.style.display = "block";
+    formLatitud.style.display = "block";
+    formLongitud.style.display = "block";
+    
+    // Agregar evento para cargar datos cuando se seleccione un contenedor
+    selectContenedor.onchange = function() {
+      if (this.value) {
+        cargarDatosContenedor(this.value);
+      }
+    };
+    
+  } else if (modo === "eliminar") {
+    // Modo eliminar: solo mostrar select
+    cargarSelectContenedores();
+    selectContenedor.style.display = "block";
+    formId.style.display = "none";
+    formNombre.style.display = "none";
+    formPorcentaje.style.display = "none";
+    formUbicacion.style.display = "none";
+    formLatitud.style.display = "none";
+    formLongitud.style.display = "none";
+  }
   
   // Mostrar el modal
   modal.classList.add("mostrar");
@@ -192,68 +625,131 @@ function mostrarFormulario(modo) {
 function cerrarFormulario() {
   const modal = document.getElementById("formularioContenedor");
   modal.classList.remove("mostrar");
+  
+  // Limpiar el evento del select
+  document.getElementById("formSelectContenedor").onchange = null;
 }
 
 async function submitFormulario() {
-  const id = document.getElementById("formId").value.trim();
+  if (modoActual === "agregar") {
+    await agregarContenedor();
+  } else if (modoActual === "modificar") {
+    await modificarContenedor();
+  } else if (modoActual === "eliminar") {
+    await eliminarContenedor();
+  }
+}
+
+async function agregarContenedor() {
   const nombre = document.getElementById("formNombre").value.trim();
   const porcentaje = document.getElementById("formPorcentaje").value.trim();
   const ubicacion = document.getElementById("formUbicacion").value.trim();
   const latitud = document.getElementById("formLatitud").value.trim();
   const longitud = document.getElementById("formLongitud").value.trim();
 
-  // Validaciones básicas
-  if (modoActual !== "eliminar" && (!nombre || !porcentaje || !ubicacion || !latitud || !longitud)) {
+  if (!nombre || !ubicacion || !latitud || !longitud) {
     alert("Por favor complete todos los campos requeridos");
     return;
   }
 
-  if ((modoActual === "modificar" || modoActual === "eliminar") && !id) {
-    alert("Por favor ingrese un ID para modificar/eliminar");
-    return;
-  }
-
   const contenedor = { 
-    id, 
     nombre, 
-    porcentaje: parseInt(porcentaje), 
+    porcentaje: parseInt(porcentaje) || 0, 
     ubicacion, 
-    lat: latitud, 
-    lng: longitud 
+    latitud: parseFloat(latitud), 
+    longitud: parseFloat(longitud)
   };
   
   try {
-    let res;
-    switch (modoActual) {
-      case "agregar":
-        res = await fetch(apiUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(contenedor)
-        });
-        break;
-      case "modificar":
-        res = await fetch(apiUrl, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(contenedor)
-        });
-        break;
-      case "eliminar":
-        res = await fetch(`${apiUrl}/${id}`, {
-          method: "DELETE"
-        });
-        break;
-    }
+    const res = await fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(contenedor)
+    });
 
     if (!res.ok) throw new Error("Error en la operación");
     
-    alert(`Contenedor ${modoActual}do exitosamente`);
+    alert("Contenedor agregado exitosamente");
     cerrarFormulario();
     obtenerContenedores();
   } catch (error) {
     console.error("Error:", error);
-    alert(`Error al ${modoActual} el contenedor`);
+    alert("Error al agregar el contenedor");
+  }
+}
+
+async function modificarContenedor() {
+  const selectContenedor = document.getElementById("formSelectContenedor");
+  const contenedorId = selectContenedor.value;
+  
+  if (!contenedorId) {
+    alert("Por favor seleccione un contenedor");
+    return;
+  }
+
+  const nombre = document.getElementById("formNombre").value.trim();
+  const porcentaje = document.getElementById("formPorcentaje").value.trim();
+  const ubicacion = document.getElementById("formUbicacion").value.trim();
+  const latitud = document.getElementById("formLatitud").value.trim();
+  const longitud = document.getElementById("formLongitud").value.trim();
+
+  if (!nombre || !ubicacion || !latitud || !longitud) {
+    alert("Por favor complete todos los campos requeridos");
+    return;
+  }
+
+  const contenedor = { 
+    nombre, 
+    porcentaje: parseInt(porcentaje) || 0, 
+    ubicacion, 
+    latitud: parseFloat(latitud), 
+    longitud: parseFloat(longitud)
+  };
+  
+  try {
+    const res = await fetch(`${apiUrl}/${contenedorId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(contenedor)
+    });
+
+    if (!res.ok) throw new Error("Error en la operación");
+    
+    alert("Contenedor modificado exitosamente");
+    cerrarFormulario();
+    obtenerContenedores();
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al modificar el contenedor");
+  }
+}
+
+async function eliminarContenedor() {
+  const selectContenedor = document.getElementById("formSelectContenedor");
+  const contenedorId = selectContenedor.value;
+  
+  if (!contenedorId) {
+    alert("Por favor seleccione un contenedor");
+    return;
+  }
+
+  if (!confirm("¿Está seguro de que desea eliminar este contenedor?")) {
+    return;
+  }
+  
+  try {
+    const res = await fetch(`${apiUrl}/${contenedorId}`, {
+      method: "DELETE"
+    });
+
+    if (!res.ok) throw new Error("Error en la operación");
+    
+    alert("Contenedor eliminado exitosamente");
+    cerrarFormulario();
+    obtenerContenedores();
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al eliminar el contenedor");
   }
 }
 
