@@ -225,3 +225,28 @@ canvas {
   max-width: 100%;
   height: 250px;
 }
+
+/* tarjeta-vaciado.css */
+.card-small {
+  margin-left: 200px;
+  margin-top: 20px;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #222;
+  display: inline-block;
+  transition: background-color 0.35s ease;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.15);
+  
+}
+
+#badge-pequeno {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(40, 167, 69, 0.15);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #28a745;
+}
