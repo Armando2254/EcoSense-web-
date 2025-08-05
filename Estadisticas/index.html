@@ -29,6 +29,22 @@
 
 
 <main class="main">
+
+<div id="tarjeta-tiempo-vaciado" style="margin-bottom:1rem; max-width:220px;">
+  <div class="card-small" aria-live="polite" aria-label="Promedio de tiempo de vaciado">
+    <div style="display:flex; justify-content: space-between; align-items: center; gap:0.5rem;">
+      <div>
+        <div style="font-size:0.65rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px;">Tiempo de vaciado</div>
+        <div id="tiempo-text" style="font-weight:700; font-size:1.4rem; line-height:1;">--:--:--</div>
+      </div>
+      <div id="badge-pequeno">Cargando</div>
+    </div>
+    <div id="subtexto" style="font-size:0.55rem; margin-top:4px; opacity:0.85;">Última actualización: --</div>
+  </div>
+</div>
+
+
+
   <div class="charts-grid">
     <!-- 1 -->
     <section class="chart-card">
@@ -470,19 +486,118 @@
   }
 
   window.onload = cargarContenedores;
+
+   // Actualizar gráficas automáticamente cada 60 segundos
+  setInterval(() => {
+    cargarGraficaContenedor();
+    cargarGraficaGeneral();
+    cargarGraficaSemana();
+    cargarGraficaSemanaContenedor();
+    cargarGraficaUbicacion();
+  }, 300000); // 60000 milisegundos = 60 segundos
+
+
+
+
 </script>
+
+
+<script>
+  // Colores base
+  const GREEN = { r: 40,  g: 167, b: 69 };   // óptimo
+  const ORANGE = { r: 253, g: 126, b: 20 };  // advertencia (15 min)
+  const RED = { r: 220, g: 53,  b: 69 };     // alto (30+)
+
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
+  function rgbToCss(c) {
+    return `rgb(${Math.round(c.r)}, ${Math.round(c.g)}, ${Math.round(c.b)})`;
+  }
+
+  // Dado el promedio en minutos, calcula el color
+  function calcularColorEnMinutos(minutos) {
+    if (minutos <= 0) return GREEN;
+    if (minutos <= 15) {
+      const ratio = minutos / 15;
+      return {
+        r: lerp(GREEN.r, ORANGE.r, ratio),
+        g: lerp(GREEN.g, ORANGE.g, ratio),
+        b: lerp(GREEN.b, ORANGE.b, ratio)
+      };
+    } else {
+      const over = Math.min(minutos, 30) - 15;
+      const ratio = over / 15;
+      return {
+        r: lerp(ORANGE.r, RED.r, ratio),
+        g: lerp(ORANGE.g, RED.g, ratio),
+        b: lerp(ORANGE.b, RED.b, ratio)
+      };
+    }
+  }
+
+  // Convierte HH:mm:ss a horas decimales
+  function duracionAHoras(horaStr) {
+    const [h, m, s] = horaStr.split(":").map(Number);
+    return h + m / 60 + s / 3600;
+  }
+
+  // Convierte horas decimales a texto HH:mm:ss
+  function horasADuracion(horas) {
+    const totalSeg = Math.round(horas * 3600);
+    const h = Math.floor(totalSeg / 3600);
+    const m = Math.floor((totalSeg % 3600) / 60);
+    const s = totalSeg % 60;
+    const pad = n => String(n).padStart(2, "0");
+    return `${pad(h)}:${pad(m)}:${pad(s)}`;
+  }
+
+  async function actualizarTarjetaVaciado() {
+    const tarjeta = document.getElementById("tarjeta-tiempo-vaciado");
+    const tiempoText = document.getElementById("tiempo-text");
+    const badge = document.getElementById("badge-pequeno");
+    const sub = document.getElementById("subtexto");
+
+    try {
+      const resp = await fetch(window.settings.apiUrl + 'registro/promedio-tiempollenado', { cache: "no-store" });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+
+      let promedioHoras = data.promedio ? duracionAHoras(data.promedio) : NaN;
+      if (isNaN(promedioHoras)) throw new Error("Promedio no es número");
+
+      const duracionStr = horasADuracion(promedioHoras);
+      tiempoText.textContent = duracionStr;
+
+      const minutos = promedioHoras * 60;
+      const colorObj = calcularColorEnMinutos(minutos);
+      tarjeta.querySelector(".card-small").style.backgroundColor = rgbToCss(colorObj);
+
+      if (minutos <= 5) {
+        badge.textContent = "Óptimo";
+      } else if (minutos <= 15) {
+        badge.textContent = "Advertencia";
+      } else {
+        badge.textContent = "Alto";
+      }
+
+      const ahora = new Date();
+      sub.textContent = `Última actualización: ${ahora.toLocaleTimeString("es-MX")}`;
+    } catch (err) {
+      tiempoText.textContent = "--:--:--";
+      badge.textContent = "Error";
+      sub.textContent = `No se pudo obtener: ${err.message}`;
+      tarjeta.querySelector(".card-small").style.backgroundColor = "#ccc";
+      console.error("Error tarjeta vaciado:", err);
+    }
+  }
+
+  actualizarTarjetaVaciado();
+  setInterval(actualizarTarjetaVaciado, 20000); // cada 20s
+</script>
+
 
 
     </body>
     </html>
-
-
-
-
-
-
-
-
-
-
-
