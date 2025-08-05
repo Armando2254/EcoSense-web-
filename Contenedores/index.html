@@ -40,7 +40,7 @@
     <div id="contenedoresLista"></div>
   </main>
 
-  <!-- FOOTER CORREGIDO (IGUAL QUE RECOLECTORES) -->
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-left">
       <div class="social-icons">
@@ -79,26 +79,35 @@
   <div class="form-modal">
     <button class="btn-cerrar" onclick="cerrarFormulario()">&times;</button>
     <h3 id="formTitulo">Agregar Contenedor</h3>
-    <input type="text" id="formId" placeholder="ID (para modificar/eliminar)">
+    
+    <!-- Select para modificar/eliminar -->
+    <select id="formSelectContenedor" style="display:none;" aria-placeholder="Seleccionar contenedor...">
+      <option value="">Seleccionar contenedor...</option>
+    </select>
+    
+    <!-- Campos del formulario -->
+    <input type="text" id="formId" placeholder="ID" style="display:none;">
     <input type="text" id="formNombre" placeholder="Nombre">
-    <input type="number" id="formPorcentaje" placeholder="Porcentaje de llenado">
+    <input type="number" id="formPorcentaje" placeholder="Porcentaje de llenado" min="0" max="100">
     <input type="text" id="formUbicacion" placeholder="Ubicación">
     <input type="text" id="formLatitud" placeholder="Latitud">
     <input type="text" id="formLongitud" placeholder="Longitud">
     <button class="enviar-btn" onclick="submitFormulario()">Enviar</button>
   </div>
 </div>
-<script src="/config/config.js"></script>
 
 <script>
-const apiUrl = window.settings.apiUrl+"Contenedor";
+// Simulamos la configuración ya que no tenemos acceso al archivo config.js
+const apiUrl = "http://localhost:3000/api/Contenedor"; // Ajusta esta URL según tu configuración
 let modoActual = "";
+let contenedoresGlobales = []; // Para almacenar todos los contenedores
 
 async function obtenerContenedores() {
   try {
     const res = await fetch(apiUrl);
     if (!res.ok) throw new Error("Error al obtener contenedores");
     const contenedores = await res.json();
+    contenedoresGlobales = contenedores; // Guardamos para usar en los selects
     
     const contenedor = document.getElementById("contenedoresLista");
     contenedor.innerHTML = "<h2 style='margin-bottom: 20px;'>Contenedores</h2>";
@@ -109,13 +118,21 @@ async function obtenerContenedores() {
     }
     
     contenedores.forEach(c => {
+      // Corregimos los nombres de las propiedades según lo que devuelve la API
+      const id = c._id || c.id || 'N/A';
+      const nombre = c.nombre || c.name || 'Sin nombre';
+      const porcentaje = c.porcentaje || c.percentage || c.llenado || 0;
+      const ubicacion = c.ubicacion || c.location || c.direccion || 'Sin ubicación';
+      const lat = c.latitud || c.lat || c.latitude || 'N/A';
+      const lng = c.longitud || c.lng || c.longitude || 'N/A';
+      
       contenedor.innerHTML += `
         <div style="border:1px solid #ddd; padding:15px; margin-bottom:15px; background:white; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1)">
-          <p><strong>ID:</strong> ${c.id}</p>
-          <p><strong>Nombre:</strong> ${c.nombre}</p>
-          <p><strong>% Llenado:</strong> ${c.porcentaje}%</p>
-          <p><strong>Ubicación:</strong> ${c.ubicacion}</p>
-          <p><strong>Coordenadas:</strong> ${c.lat}, ${c.lng}</p>
+          <p><strong>ID:</strong> ${id}</p>
+          <p><strong>Nombre:</strong> ${nombre}</p>
+          <p><strong>% Llenado:</strong> ${porcentaje}%</p>
+          <p><strong>Ubicación:</strong> ${ubicacion}</p>
+          <p><strong>Coordenadas:</strong> ${lat}, ${lng}</p>
         </div>
       `;
     });
@@ -138,14 +155,23 @@ async function buscarContenedor() {
     
     const c = await res.json();
     const contenedor = document.getElementById("contenedoresLista");
+    
+    // Corregimos los nombres de las propiedades
+    const idContenedor = c._id || c.id || 'N/A';
+    const nombre = c.nombre || c.name || 'Sin nombre';
+    const porcentaje = c.porcentaje || c.percentage || c.llenado || 0;
+    const ubicacion = c.ubicacion || c.location || c.direccion || 'Sin ubicación';
+    const lat = c.latitud || c.lat || c.latitude || 'N/A';
+    const lng = c.longitud || c.lng || c.longitude || 'N/A';
+    
     contenedor.innerHTML = `
       <h2 style='margin-bottom: 20px;'>Resultado de búsqueda</h2>
       <div style="border:1px solid #ddd; padding:15px; background:white; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.1)">
-        <p><strong>ID:</strong> ${c.id}</p>
-        <p><strong>Nombre:</strong> ${c.nombre}</p>
-        <p><strong>% Llenado:</strong> ${c.porcentaje}%</p>
-        <p><strong>Ubicación:</strong> ${c.ubicacion}</p>
-        <p><strong>Coordenadas:</strong> ${c.lat}, ${c.lng}</p>
+        <p><strong>ID:</strong> ${idContenedor}</p>
+        <p><strong>Nombre:</strong> ${nombre}</p>
+        <p><strong>% Llenado:</strong> ${porcentaje}%</p>
+        <p><strong>Ubicación:</strong> ${ubicacion}</p>
+        <p><strong>Coordenadas:</strong> ${lat}, ${lng}</p>
       </div>
     `;
   } catch (error) {
@@ -154,36 +180,100 @@ async function buscarContenedor() {
   }
 }
 
+function cargarSelectContenedores() {
+  const select = document.getElementById("formSelectContenedor");
+  select.innerHTML = '<option value="">Seleccionar contenedor...</option>';
+  
+  contenedoresGlobales.forEach(c => {
+    const id = c._id || c.id;
+    const nombre = c.nombre || c.name || 'Sin nombre';
+    select.innerHTML += `<option value="${id}">${nombre}</option>`;
+  });
+}
+
+async function cargarDatosContenedor(contenedorId) {
+  try {
+    const res = await fetch(`${apiUrl}/${contenedorId}`);
+    if (!res.ok) throw new Error("Error al obtener datos del contenedor");
+    
+    const c = await res.json();
+    
+    // Llenar los campos con los datos del contenedor seleccionado
+    document.getElementById("formId").value = c._id || c.id || '';
+    document.getElementById("formNombre").value = c.nombre || c.name || '';
+    document.getElementById("formPorcentaje").value = c.porcentaje || c.percentage || c.llenado || 0;
+    document.getElementById("formUbicacion").value = c.ubicacion || c.location || c.direccion || '';
+    document.getElementById("formLatitud").value = c.latitud || c.lat || c.latitude || '';
+    document.getElementById("formLongitud").value = c.longitud || c.lng || c.longitude || '';
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al cargar los datos del contenedor");
+  }
+}
+
 function mostrarFormulario(modo) {
   modoActual = modo;
   const modal = document.getElementById("formularioContenedor");
   const titulo = document.getElementById("formTitulo");
+  const selectContenedor = document.getElementById("formSelectContenedor");
+  const formId = document.getElementById("formId");
+  const formNombre = document.getElementById("formNombre");
+  const formPorcentaje = document.getElementById("formPorcentaje");
+  const formUbicacion = document.getElementById("formUbicacion");
+  const formLatitud = document.getElementById("formLatitud");
+  const formLongitud = document.getElementById("formLongitud");
   
   // Configurar el título según el modo
   titulo.textContent = `${modo.charAt(0).toUpperCase() + modo.slice(1)} Contenedor`;
   
-  // Mostrar u ocultar campos según el modo
-  if (modo === "eliminar") {
-    document.getElementById("formNombre").style.display = "none";
-    document.getElementById("formPorcentaje").style.display = "none";
-    document.getElementById("formUbicacion").style.display = "none";
-    document.getElementById("formLatitud").style.display = "none";
-    document.getElementById("formLongitud").style.display = "none";
-  } else {
-    document.getElementById("formNombre").style.display = "block";
-    document.getElementById("formPorcentaje").style.display = "block";
-    document.getElementById("formUbicacion").style.display = "block";
-    document.getElementById("formLatitud").style.display = "block";
-    document.getElementById("formLongitud").style.display = "block";
-  }
-  
   // Limpiar formulario
-  document.getElementById("formId").value = "";
-  document.getElementById("formNombre").value = "";
-  document.getElementById("formPorcentaje").value = "";
-  document.getElementById("formUbicacion").value = "";
-  document.getElementById("formLatitud").value = "";
-  document.getElementById("formLongitud").value = "";
+  formId.value = "";
+  formNombre.value = "";
+  formPorcentaje.value = "";
+  formUbicacion.value = "";
+  formLatitud.value = "";
+  formLongitud.value = "";
+  
+  if (modo === "agregar") {
+    // Modo agregar: ocultar select y ID, mostrar todos los otros campos
+    selectContenedor.style.display = "none";
+    formId.style.display = "none"; // El ID lo genera MongoDB
+    formNombre.style.display = "block";
+    formPorcentaje.style.display = "block";
+    formPorcentaje.value = "0"; // Valor por defecto
+    formUbicacion.style.display = "block";
+    formLatitud.style.display = "block";
+    formLongitud.style.display = "block";
+    
+  } else if (modo === "modificar") {
+    // Modo modificar: mostrar select, ocultar ID manual, mostrar otros campos
+    cargarSelectContenedores();
+    selectContenedor.style.display = "block";
+    formId.style.display = "none"; // Se llenará automáticamente
+    formNombre.style.display = "block";
+    formPorcentaje.style.display = "block";
+    formUbicacion.style.display = "block";
+    formLatitud.style.display = "block";
+    formLongitud.style.display = "block";
+    
+    // Agregar evento para cargar datos cuando se seleccione un contenedor
+    selectContenedor.onchange = function() {
+      if (this.value) {
+        cargarDatosContenedor(this.value);
+      }
+    };
+    
+  } else if (modo === "eliminar") {
+    // Modo eliminar: solo mostrar select
+    cargarSelectContenedores();
+    selectContenedor.style.display = "block";
+    formId.style.display = "none";
+    formNombre.style.display = "none";
+    formPorcentaje.style.display = "none";
+    formUbicacion.style.display = "none";
+    formLatitud.style.display = "none";
+    formLongitud.style.display = "none";
+  }
   
   // Mostrar el modal
   modal.classList.add("mostrar");
@@ -192,68 +282,131 @@ function mostrarFormulario(modo) {
 function cerrarFormulario() {
   const modal = document.getElementById("formularioContenedor");
   modal.classList.remove("mostrar");
+  
+  // Limpiar el evento del select
+  document.getElementById("formSelectContenedor").onchange = null;
 }
 
 async function submitFormulario() {
-  const id = document.getElementById("formId").value.trim();
+  if (modoActual === "agregar") {
+    await agregarContenedor();
+  } else if (modoActual === "modificar") {
+    await modificarContenedor();
+  } else if (modoActual === "eliminar") {
+    await eliminarContenedor();
+  }
+}
+
+async function agregarContenedor() {
   const nombre = document.getElementById("formNombre").value.trim();
   const porcentaje = document.getElementById("formPorcentaje").value.trim();
   const ubicacion = document.getElementById("formUbicacion").value.trim();
   const latitud = document.getElementById("formLatitud").value.trim();
   const longitud = document.getElementById("formLongitud").value.trim();
 
-  // Validaciones básicas
-  if (modoActual !== "eliminar" && (!nombre || !porcentaje || !ubicacion || !latitud || !longitud)) {
+  if (!nombre || !ubicacion || !latitud || !longitud) {
     alert("Por favor complete todos los campos requeridos");
     return;
   }
 
-  if ((modoActual === "modificar" || modoActual === "eliminar") && !id) {
-    alert("Por favor ingrese un ID para modificar/eliminar");
-    return;
-  }
-
   const contenedor = { 
-    id, 
     nombre, 
-    porcentaje: parseInt(porcentaje), 
+    porcentaje: parseInt(porcentaje) || 0, 
     ubicacion, 
-    lat: latitud, 
-    lng: longitud 
+    latitud: parseFloat(latitud), 
+    longitud: parseFloat(longitud)
   };
   
   try {
-    let res;
-    switch (modoActual) {
-      case "agregar":
-        res = await fetch(apiUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(contenedor)
-        });
-        break;
-      case "modificar":
-        res = await fetch(apiUrl, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(contenedor)
-        });
-        break;
-      case "eliminar":
-        res = await fetch(`${apiUrl}/${id}`, {
-          method: "DELETE"
-        });
-        break;
-    }
+    const res = await fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(contenedor)
+    });
 
     if (!res.ok) throw new Error("Error en la operación");
     
-    alert(`Contenedor ${modoActual}do exitosamente`);
+    alert("Contenedor agregado exitosamente");
     cerrarFormulario();
     obtenerContenedores();
   } catch (error) {
     console.error("Error:", error);
-    alert(`Error al ${modoActual} el contenedor`);
+    alert("Error al agregar el contenedor");
+  }
+}
+
+async function modificarContenedor() {
+  const selectContenedor = document.getElementById("formSelectContenedor");
+  const contenedorId = selectContenedor.value;
+  
+  if (!contenedorId) {
+    alert("Por favor seleccione un contenedor");
+    return;
+  }
+
+  const nombre = document.getElementById("formNombre").value.trim();
+  const porcentaje = document.getElementById("formPorcentaje").value.trim();
+  const ubicacion = document.getElementById("formUbicacion").value.trim();
+  const latitud = document.getElementById("formLatitud").value.trim();
+  const longitud = document.getElementById("formLongitud").value.trim();
+
+  if (!nombre || !ubicacion || !latitud || !longitud) {
+    alert("Por favor complete todos los campos requeridos");
+    return;
+  }
+
+  const contenedor = { 
+    nombre, 
+    porcentaje: parseInt(porcentaje) || 0, 
+    ubicacion, 
+    latitud: parseFloat(latitud), 
+    longitud: parseFloat(longitud)
+  };
+  
+  try {
+    const res = await fetch(`${apiUrl}/${contenedorId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(contenedor)
+    });
+
+    if (!res.ok) throw new Error("Error en la operación");
+    
+    alert("Contenedor modificado exitosamente");
+    cerrarFormulario();
+    obtenerContenedores();
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al modificar el contenedor");
+  }
+}
+
+async function eliminarContenedor() {
+  const selectContenedor = document.getElementById("formSelectContenedor");
+  const contenedorId = selectContenedor.value;
+  
+  if (!contenedorId) {
+    alert("Por favor seleccione un contenedor");
+    return;
+  }
+
+  if (!confirm("¿Está seguro de que desea eliminar este contenedor?")) {
+    return;
+  }
+  
+  try {
+    const res = await fetch(`${apiUrl}/${contenedorId}`, {
+      method: "DELETE"
+    });
+
+    if (!res.ok) throw new Error("Error en la operación");
+    
+    alert("Contenedor eliminado exitosamente");
+    cerrarFormulario();
+    obtenerContenedores();
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al eliminar el contenedor");
   }
 }
 
