@@ -1,5 +1,7 @@
 // 1. Obtener el ID del administrador (puedes guardarlo en localStorage después del login)
-const adminId = "6875f6019877679620b5db24"; // Reemplaza esto con el ID real
+
+
+const adminId = adminI; // Reemplaza esto con el ID real
 
 // 2. Función para cargar los datos del administrador
 async function loadAdminData() {

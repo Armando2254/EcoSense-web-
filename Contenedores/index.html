@@ -13,16 +13,48 @@
 <div class="container">
   <!-- NAVBAR -->
   <nav class="navbar">
-    <p class="eco">Panel de Administrador</p>
-    <ul class="opciones">
-      <li class="opcion"><a href="#" style="background-color: #adcfa6; color: white;">Contenedores</a></li>
-      <li class="opcion"><a href="../Estadisticas/index.html">Estadísticas</a></li>
-      <li class="opcion"><a href="../Recolectores/index.html">Recolectores</a></li>
-      <li class="opcion"><a href="../Rutas/index.html">Rutas</a></li>
-      <li class="opcion"><a href="../Perfil/index.html">Perfil</a></li>
-      <img class="picture-user" src="../assets/images/PicUser.png" alt="UserPicture">
-    </ul>
-  </nav>
+  <p class="eco">Panel de Administrador</p>
+  <ul class="opciones">
+    <li class="opcion"><a href="../Contenedores/index.html">Contenedores</a></li>
+    <li class="opcion"><a href="../Estadisticas/index.html">Estadísticas</a></li>
+    <li class="opcion"><a href="../Recolectores/index.html">Recolectores</a></li>
+    <li class="opcion"><a href="../rutas/index.html" id="rutas-link">Rutas</a></li>
+    <li class="opcion"><a href="../Perfil/index.html" id="perfil-link">Perfil</a></li>
+    <img class="picture-user" src="../assets/images/PicUser.png" alt="UserPicture" />
+  </ul>
+</nav>
+
+<script>
+  // Obtener el ID del administrador desde la URL
+  const params = new URLSearchParams(window.location.search);
+  const adminId = params.get('id');
+
+  // Validación opcional
+  if (!adminId || adminId.length !== 24) {
+    alert("Sesión no válida o expirada.");
+    window.location.href = "../login.html";
+  }
+
+  // Enlaces que deben mantener el ID
+  document.addEventListener("DOMContentLoaded", () => {
+    const linksConservarId = [
+      'a[href="../rutas/index.html"]',
+      'a[href="../Perfil/index.html"]',
+      'a[href="../Main/index.html"]',
+      'a[href="../Estadisticas/index.html"]',
+      'a[href="../Contenedores/index.html"]',
+      'a[href="../Recolectores/index.html"]'
+    ];
+
+    linksConservarId.forEach(selector => {
+      const link = document.querySelector(selector);
+      if (link) {
+        const hrefBase = link.getAttribute('href').split('?')[0]; // Eliminar parámetros antiguos
+        link.setAttribute('href', `${hrefBase}?id=${adminId}`);
+      }
+    });
+  });
+</script>
 
   <!-- CONTENIDO PRINCIPAL -->
   <main class="main">
@@ -95,6 +127,10 @@
     <button class="enviar-btn" onclick="submitFormulario()">Enviar</button>
   </div>
 </div>
+
+
+
+
 
 <script>
 // Simulamos la configuración ya que no tenemos acceso al archivo config.js
